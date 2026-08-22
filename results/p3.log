@@ -1,0 +1,22 @@
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+[h01_base64] done -> results/p3-holdout/h01_base64
+[h02_split_payload] done -> results/p3-holdout/h02_split_payload
+Traceback (most recent call last):
+  File "/home/dafarus/vault/projects/moonshot/src/run_holdout.py", line 95, in <module>
+    main()
+  File "/home/dafarus/vault/projects/moonshot/src/run_holdout.py", line 84, in main
+    benchmark_suite_with_injections(
+  File "/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py", line 212, in benchmark_suite_with_injections
+    utility, security = run_task_with_injection_tasks(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py", line 84, in run_task_with_injection_tasks
+    task_injections = attack.attack(user_task, injection_task)
+                      ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/moonshot/src/run_holdout.py", line 41, in attack
+    return super().attack(user_task, injection_task)
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/attacks/base_attacks.py", line 119, in attack
+    injections[inj] = self.jailbreak.format(
+                      ^^^^^^^^^^^^^^^^^^^^^^
+KeyError: '"auto_forward"'

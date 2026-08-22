@@ -1,0 +1,47 @@
+=== LADDER: qwen3-5-9b — preflight ===
+PREFLIGHT-OK
+=== LADDER: qwen3-5-9b — ungated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-5-9b — gated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-5-9b — benign x2 ===
+utility: (see JSON logs; summary unavailable for this result type)
+utility: (see JSON logs; summary unavailable for this result type)
+=== checkpoint after qwen3-5-9b: 19M total results ===
+=== LADDER: qwen3-6-35b-a3b — preflight ===
+PREFLIGHT-NO-TOOLCALLS
+=== qwen3-6-35b-a3b SKIPPED (no tool calling) ===
+=== checkpoint after qwen3-6-35b-a3b: 19M total results ===
+=== LADDER: qwen3-next-80b — preflight ===
+PREFLIGHT-OK
+=== LADDER: qwen3-next-80b — ungated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-next-80b — gated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-next-80b — benign x2 ===
+utility: (see JSON logs; summary unavailable for this result type)
+utility: (see JSON logs; summary unavailable for this result type)
+=== checkpoint after qwen3-next-80b: 22M total results ===
+=== LADDER: qwen3-235b-a22b-instruct-2507 — preflight ===
+PREFLIGHT-OK
+=== LADDER: qwen3-235b-a22b-instruct-2507 — ungated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-235b-a22b-instruct-2507 — gated attack grid ===
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+=== LADDER: qwen3-235b-a22b-instruct-2507 — benign x2 ===
+utility: (see JSON logs; summary unavailable for this result type)
+utility: (see JSON logs; summary unavailable for this result type)
+=== checkpoint after qwen3-235b-a22b-instruct-2507: 26M total results ===
+=== LADDER COMPLETE ===

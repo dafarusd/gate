@@ -1,0 +1,5 @@
+utility: (see JSON logs; summary unavailable for this result type)
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0
+V7-DONE

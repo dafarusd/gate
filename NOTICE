@@ -1,0 +1,40 @@
+moonshot — deterministic policy gate against prompt injection
+Copyright (c) 2026 Dafarus (dafarusd). All rights reserved.
+
+============================================================
+LICENSE
+============================================================
+
+This project is licensed under the GNU Affero General Public License v3.0
+(AGPL-3.0-only). See the LICENSE file for the full text.
+
+The AGPL requires that anyone who runs a modified version of this software
+to provide a network service must make their complete corresponding source
+available to the users of that service.
+
+============================================================
+DUAL LICENSING / COMMERCIAL USE
+============================================================
+
+Dafarus is the sole copyright holder of the original code in this
+repository and reserves all rights not granted by the AGPL-3.0.
+
+If the AGPL-3.0's copyleft terms do not suit your use — for example, you
+want to incorporate this code into a proprietary or closed-source product,
+or offer it as a hosted service without releasing your own source — a
+separate commercial license is available. Contact the copyright holder to
+arrange one.
+
+Contributions: by submitting a contribution you agree that the copyright
+holder may license your contribution under both the AGPL-3.0 and any
+commercial license offered above (i.e. you grant a relicensing right).
+This keeps the dual-licensing model intact.
+
+============================================================
+THIRD-PARTY COMPONENTS
+============================================================
+
+This project depends on, but does not include or redistribute, AgentDojo
+(https://github.com/ethz-spylab/agentdojo), ETH Zurich, licensed under the
+MIT License. AgentDojo is installed as an external dependency at runtime
+and is not vendored into this repository. Its license governs its own code.

@@ -1,0 +1,9 @@
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+Traceback (most recent call last):
+  File "/home/dafarus/vault/projects/moonshot/src/run_defended.py", line 185, in <module>
+    main()
+  File "/home/dafarus/vault/projects/moonshot/src/run_defended.py", line 179, in main
+    u = res.utility_results
+        ^^^^^^^^^^^^^^^^^^^
+AttributeError: 'dict' object has no attribute 'utility_results'

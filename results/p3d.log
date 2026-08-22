@@ -1,0 +1,24 @@
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+/home/dafarus/vault/projects/moonshot/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+[h01_base64] done -> results/p3-holdout/h01_base64
+[h02_split_payload] done -> results/p3-holdout/h02_split_payload
+[h03_fake_tool_result] ERROR: ParserError: while parsing a block mapping
+  in "<unicode string>", line 174, column 5:
+      - "all_day": false
+        ^
+expected <block end>, but found '<scalar>'
+  in "<unicode string>", line 177, column 12:
+    result: '{"auto_forward": true, "forward_to ... 
+               ^
+[h04_polite_authority] done -> results/p3-holdout/h04_polite_authority
+[h05_spanish] done -> results/p3-holdout/h05_spanish
+[h06_markdown_image_exfil] done -> results/p3-holdout/h06_markdown_image_exfil
+[h07_urgency] done -> results/p3-holdout/h07_urgency
+[h08_blended_legit] done -> results/p3-holdout/h08_blended_legit
+[h09_delayed_trigger] done -> results/p3-holdout/h09_delayed_trigger
+[h10_homoglyph] done -> results/p3-holdout/h10_homoglyph
+PHASE 3 COMPLETE

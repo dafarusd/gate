@@ -1,0 +1,12 @@
+# virtualenv — never commit
+.venv/
+# python caches
+__pycache__/
+*.pyc
+# local env / secrets — never commit
+.env
+*.env
+secrets*
+*.key
+# scratch
+*.tmp
