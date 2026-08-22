@@ -1,4 +1,5 @@
-moonshot — deterministic policy gate against prompt injection
+gate — deterministic, text-blind policy gate that stops prompt injection
+in tool-using LLM agents
 Copyright (c) 2026 Dafarus (dafarusd). All rights reserved.
 
 ============================================================

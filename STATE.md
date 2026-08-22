@@ -1,4 +1,8 @@
-# STATE.md — moonshot problem selection
+# STATE.md — gate: problem selection and project log
+
+*"moonshot" was the internal codename during development and remains the local directory name.
+The project's public name is `gate` (github.com/dafarusd/gate). Historical entries below were
+written under the codename; they have not been rewritten.*
 
 Mission (verbatim): "i want to do something truly meaningful with tech, ai, a
 unsolved problem… so profound that it cant go ignored. i have a old project
