@@ -344,7 +344,7 @@ travel suites; 35b via raw-Hermes parsing path.
 
 ## Direction A demo (COMPLETE 2026-08-22)
 
-- `demo/index.html` (9.3 KB, self-contained, no deps) — "One email hijacks
+- `docs/index.html` (9.3 KB, self-contained, no deps) — "One email hijacks
   your AI. Watch." 3-act replay of REAL runs: v2 undefended cell
   user_task_2×injection_task_2 (attack won; agent created calendar event with
   attacker) vs v6 gated same cell (visible POLICY GATE block; agent then
@@ -356,7 +356,7 @@ travel suites; 35b via raw-Hermes parsing path.
   stochastic) → used today's real grid logs instead (no re-run lottery);
   corrected verdict text ("emailed"→"calendar event") + footer cell ref.
 - Footer has (repo link) PLACEHOLDER — owner fills at publish time.
-- View: open demo/index.html in a browser; screen-record = the launch video.
+- View: open docs/index.html in a browser; screen-record = the launch video.
 
 ## Log
 
