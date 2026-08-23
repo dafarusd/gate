@@ -10,3 +10,6 @@ secrets*
 *.key
 # scratch
 *.tmp
+# downloaded tooling — not part of the project
+gh.tgz
+gh_*_linux_amd64/
