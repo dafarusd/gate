@@ -146,7 +146,13 @@ def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provid
     )
     gate_on = gate_layers != {"none"}
 
-    loop_elements = ([gate] if gate_on else []) + [ToolsExecutor(formatter), llm]
+    if "gatellm" in gate_layers:
+        from gatellm_gate import GatellmGate
+        enforcement_element = GatellmGate()
+    else:
+        enforcement_element = gate
+
+    loop_elements = ([enforcement_element] if gate_on else []) + [ToolsExecutor(formatter), llm]
     pipeline = AgentPipeline(
         [SystemMessage(system_message), InitQuery(), llm, ToolsExecutionLoop(loop_elements)]
     )

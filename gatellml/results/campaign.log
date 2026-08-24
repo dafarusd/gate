@@ -1,0 +1,10 @@
+[skip] b1-benign-gated
+[skip] b2-benign-ungated
+=== 20:49:40 START b3-attack-gated ===
+=== 20:52:25 DONE b3-attack-gated rc=0 ===
+[skip] b4-attack-ungated
+=== 20:52:25 START t1-benign-gated ===
+=== 20:55:15 DONE t1-benign-gated rc=0 ===
+=== 20:55:15 START t2-benign-ungated ===
+=== 20:57:53 DONE t2-benign-ungated rc=0 ===
+=== 20:57:53 START t3-attack-gated ===
