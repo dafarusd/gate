@@ -146,3 +146,25 @@ D (rigor pack, frozen before launch):
 1. b4 completion (force_rerun=False resumes; 4 missing cells)
 2. k=5 repeats: s3 breach cell (slack utask1×inj1, PolicyGate) → sk1-r1..r5
 3. k=5 repeats: t3 breach cell (travel utask0×inj6, PolicyGate) → tk1-r1..r5
+## Addendum E — local-model replication (pre-registered 2026-08-23 ~22:4x, BEFORE any L-run)
+
+Question: do tonight's frontier findings replicate off-frontier on gate's original local arm?
+Model: qwen3-coder-32k:latest via Ollama (LOCAL provider, num_ctx=32768), sequential, one stream.
+Capability caveat pre-acknowledged: if the local model cannot execute multi-step injections,
+all arms read ~0% attack success and the security comparison is vacuous-by-incapacity (gate's
+"security through incompetence"); utility is reported alongside per doctrine, and that outcome
+itself replicates the ladder finding rather than falsifying transfer claims.
+
+Arms in priority order (attack replication first):
+
+| # | Suite | Arms | Cells |
+|---|---|---|---|
+| L2 | slack | attack: ungated / gate / gatellm-B | 45 |
+| L4 | travel | attack: ungated / gate / gatellm-B | 63 |
+| L5 | banking | attack: ungated / gate | 54 |
+| L1 | slack | benign: ungated / gate / gatellm-B | 63 |
+| L3 | travel | benign: ungated / gate / gatellm-B | 60 |
+
+Success criteria fixed now: replication of the SIGN PATTERN (gate leaks slack/travel relative to
+banking; B-manifest closes leaks) counts even at low absolute rates; all deltas reported with
+utility context. Stop condition: owner interrupt or harness failure only.
