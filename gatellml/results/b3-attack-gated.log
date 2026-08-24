@@ -1,0 +1,66 @@
+/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+Traceback (most recent call last):
+  File "/home/dafarus/vault/projects/gatellml/src/run_defended.py", line 201, in <module>
+    main()
+  File "/home/dafarus/vault/projects/gatellml/src/run_defended.py", line 187, in main
+    res = benchmark_suite_with_injections(
+          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py", line 212, in benchmark_suite_with_injections
+    utility, security = run_task_with_injection_tasks(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py", line 132, in run_task_with_injection_tasks
+    raise e
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py", line 117, in run_task_with_injection_tasks
+    utility, security = suite.run_task_with_pipeline(
+                        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/task_suite/task_suite.py", line 386, in run_task_with_pipeline
+    _, _, task_environment, messages, _ = agent_pipeline.query(prompt, runtime, task_environment)
+                                          ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/agent_pipeline/agent_pipeline.py", line 178, in query
+    query, runtime, env, messages, extra_args = element.query(query, runtime, env, messages, extra_args)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/agent_pipeline/tool_execution.py", line 155, in query
+    query, runtime, env, messages, extra_args = element.query(query, runtime, env, messages, extra_args)
+                                                ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/agent_pipeline/llms/openai_llm.py", line 198, in query
+    completion = chat_completion_request(
+                 ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/tenacity/__init__.py", line 331, in wrapped_f
+    return copy(f, *args, **kw)
+           ^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/tenacity/__init__.py", line 470, in __call__
+    do = self.iter(retry_state=retry_state)
+         ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/tenacity/__init__.py", line 371, in iter
+    result = action(retry_state)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/tenacity/__init__.py", line 393, in <lambda>
+    self._add_action_func(lambda rs: rs.outcome.result())
+                                     ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 449, in result
+    return self.__get_result()
+           ^^^^^^^^^^^^^^^^^^^
+  File "/usr/lib/python3.12/concurrent/futures/_base.py", line 401, in __get_result
+    raise self._exception
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/tenacity/__init__.py", line 473, in __call__
+    result = fn(*args, **kwargs)
+             ^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/agent_pipeline/llms/openai_llm.py", line 157, in chat_completion_request
+    return client.chat.completions.create(
+           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/src/run_defended.py", line 78, in create
+    return self._c.create(**kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/openai/_utils/_utils.py", line 298, in wrapper
+    return func(*args, **kwargs)
+           ^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/openai/resources/chat/completions/completions.py", line 1296, in create
+    return self._post(
+           ^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1381, in post
+    return cast(ResponseT, self.request(cast_to, opts, stream=stream, stream_cls=stream_cls))
+                           ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/openai/_base_client.py", line 1154, in request
+    raise self._make_status_error_from_response(err.response) from None
+openai.BadRequestError: Error code: 400 - {'details': {'_errors': [], 'messages': {'3': {'_errors': [], 'role': {'_errors': ['Invalid literal value, expected "user"', 'Invalid literal value, expected "assistant"', 'Invalid literal value, expected "system"', 'Invalid literal value, expected "developer"']}, 'content': {'_errors': ['Expected string, received null', 'Expected array, received null', 'Expected string, received null', 'Expected string, received null', 'Expected array, received null', 'Expected string, received null', 'Expected array, received null']}}, '_errors': []}}, 'error': 'Invalid request parameters', 'issues': [{'code': 'invalid_union', 'unionErrors': [{'issues': [{'received': 'tool', 'code': 'invalid_literal', 'expected': 'user', 'path': ['messages', 3, 'role'], 'message': 'Invalid literal value, expected "user"'}, {'code': 'invalid_union', 'unionErrors': [{'issues': [{'code': 'invalid_type', 'expected': 'string', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected string, received null'}], 'name': 'ZodError'}, {'issues': [{'code': 'invalid_type', 'expected': 'array', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected array, received null'}], 'name': 'ZodError'}], 'path': ['messages', 3, 'content'], 'message': 'Invalid input'}], 'name': 'ZodError'}, {'issues': [{'received': 'tool', 'code': 'invalid_literal', 'expected': 'assistant', 'path': ['messages', 3, 'role'], 'message': 'Invalid literal value, expected "assistant"'}], 'name': 'ZodError'}, {'issues': [{'code': 'invalid_type', 'expected': 'string', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected string, received null'}], 'name': 'ZodError'}, {'issues': [{'received': 'tool', 'code': 'invalid_literal', 'expected': 'system', 'path': ['messages', 3, 'role'], 'message': 'Invalid literal value, expected "system"'}, {'code': 'invalid_union', 'unionErrors': [{'issues': [{'code': 'invalid_type', 'expected': 'string', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected string, received null'}], 'name': 'ZodError'}, {'issues': [{'code': 'invalid_type', 'expected': 'array', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected array, received null'}], 'name': 'ZodError'}], 'path': ['messages', 3, 'content'], 'message': 'Invalid input'}], 'name': 'ZodError'}, {'issues': [{'received': 'tool', 'code': 'invalid_literal', 'expected': 'developer', 'path': ['messages', 3, 'role'], 'message': 'Invalid literal value, expected "developer"'}, {'code': 'invalid_union', 'unionErrors': [{'issues': [{'code': 'invalid_type', 'expected': 'string', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected string, received null'}], 'name': 'ZodError'}, {'issues': [{'code': 'invalid_type', 'expected': 'array', 'received': 'null', 'path': ['messages', 3, 'content'], 'message': 'Expected array, received null'}], 'name': 'ZodError'}], 'path': ['messages', 3, 'content'], 'message': 'Invalid input'}], 'name': 'ZodError'}], 'path': ['messages', 3], 'message': 'Invalid input'}]}
