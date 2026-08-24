@@ -4,8 +4,14 @@ from pathlib import Path
 
 
 def summarize(logdir: Path) -> dict:
-    cells = [f for f in logdir.rglob("*.json") if f.parent.parent.parent.name != "none"]
-    calib = [f for f in logdir.rglob("*.json") if f not in cells]
+    all_json = list(logdir.rglob("*.json"))
+    cells = [
+        f for f in all_json
+        if f.name.startswith("injection_task_")
+        and len(f.parents) >= 3
+        and f.parents[2].name.startswith("user_task_")
+    ]
+    calib = [f for f in all_json if f not in cells]
     total = len(cells)
     util = sec = blocks = 0
     for f in cells:

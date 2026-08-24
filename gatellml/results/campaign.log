@@ -10,3 +10,7 @@
 === 20:57:53 START t3-attack-gated ===
 === 21:00:47 DONE t3-attack-gated rc=0 ===
 === 21:00:47 START t4-attack-ungated ===
+=== 21:03:00 DONE t4-attack-ungated rc=0 ===
+=== 21:03:00 START s1-benign-gated ===
+=== 21:03:58 DONE s1-benign-gated rc=0 ===
+=== 21:03:58 START s2-benign-ungated ===
