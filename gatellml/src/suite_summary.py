@@ -20,8 +20,7 @@ def summarize(logdir: Path) -> dict:
         except Exception:
             continue
         util += bool(d.get("utility"))
-        if d.get("injection_task"):
-            sec += bool(d.get("security"))
+        sec += bool(d.get("security"))
         msgs = d.get("messages") or []
         for m in msgs:
             if m.get("role") == "tool" and m.get("error") and "BLOCKED" in str(m.get("error")):

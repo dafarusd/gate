@@ -16,3 +16,36 @@
 === 21:03:58 START s2-benign-ungated ===
 === 21:05:26 DONE s2-benign-ungated rc=0 ===
 === 21:05:26 START s3-attack-gated ===
+=== 21:06:18 DONE s3-attack-gated rc=0 ===
+=== 21:06:18 START s4-attack-ungated ===
+=== 21:07:33 DONE s4-attack-ungated rc=0 ===
+=== 21:07:33 MAIN CAMPAIGN COMPLETE ===
+=== 21:07:33 START c1-gated-r01 ===
+=== 21:07:39 DONE c1-gated-r01 rc=0 ===
+=== 21:07:39 START c1-gated-r02 ===
+=== 21:07:45 DONE c1-gated-r02 rc=0 ===
+=== 21:07:45 START c1-gated-r03 ===
+=== 21:07:52 DONE c1-gated-r03 rc=0 ===
+=== 21:07:52 START c1-gated-r04 ===
+=== 21:07:57 DONE c1-gated-r04 rc=0 ===
+=== 21:07:57 START c1-gated-r05 ===
+=== 21:08:02 DONE c1-gated-r05 rc=0 ===
+=== 21:08:02 START c1-gated-r06 ===
+=== 21:08:07 DONE c1-gated-r06 rc=0 ===
+=== 21:08:07 START c1-gated-r07 ===
+=== 21:08:12 DONE c1-gated-r07 rc=0 ===
+=== 21:08:12 START c1-gated-r08 ===
+=== 21:08:17 DONE c1-gated-r08 rc=0 ===
+=== 21:08:17 START c1-gated-r09 ===
+=== 21:08:27 DONE c1-gated-r09 rc=0 ===
+=== 21:08:27 START c1-gated-r10 ===
+=== 21:08:35 DONE c1-gated-r10 rc=0 ===
+=== 21:08:35 START c2-ungated-r01 ===
+=== 21:08:41 DONE c2-ungated-r01 rc=0 ===
+=== 21:08:41 START c2-ungated-r02 ===
+=== 21:08:47 DONE c2-ungated-r02 rc=0 ===
+=== 21:08:47 START c2-ungated-r03 ===
+=== 21:08:52 DONE c2-ungated-r03 rc=0 ===
+=== 21:08:52 START c2-ungated-r04 ===
+=== 21:08:58 DONE c2-ungated-r04 rc=0 ===
+=== 21:08:58 START c2-ungated-r05 ===

@@ -10,7 +10,7 @@ def load_cells(logdir: Path) -> dict[str, dict]:
             continue
         if not f.parents[1].name.startswith("user_task_"):
             continue
-        rel = "/".join(f.parents[1].parts[:2][::-1] + [f.name])
+        key = f"{f.parents[2].name}/{f.parents[1].name}/{f.name}"
         try:
             d = json.loads(f.read_text())
         except Exception:
@@ -19,7 +19,7 @@ def load_cells(logdir: Path) -> dict[str, dict]:
             m.get("role") == "tool" and "BLOCKED" in str(m.get("error"))
             for m in (d.get("messages") or [])
         )
-        out[f"{f.parents[2].name}/{f.parents[1].name}/{f.name}"] = {
+        out[key] = {
             "utility": bool(d.get("utility")),
             "attack_success": bool(d.get("security")),
             "blocked": blocked,
