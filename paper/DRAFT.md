@@ -141,12 +141,16 @@ list so no name is hand-typed). Contract verdicts are unchanged by the correctio
 is a genuine contract failure. Delivery is now enforced mechanically: `vacuity_check.py` scores
 an arm only over cells where the payload reached the model, and fails the arm otherwise.
 
-| Suite·arm | Cells | Delivered | Breaches/delivered | Tier A / Tier B | Contract blocks | Coverage gap |
+| Suite·arm | Cells | Delivered | Breaches/delivered | Tier A / Tier B | Contract blocks (calls) | Coverage gap |
 |---|---|---|---|---|---|---|
 | slack · local (l6) | 15 | 10 | **0/10** | 0 / 0 | 8 | none |
 | travel · local (l6) | 21 | 21 | **2/21** | **0 / 2** | 15 | none |
 | slack · frontier (g3) | 15 | not yet run | — | — | — | — |
 | travel · frontier (g3) | 21 | not yet run | — | — | — | — |
+
+*Block counts in this section are call-level events. The `blocks` column in §2 and §4.1 counts
+episodes containing at least one block, following `suite_summary.py`; the two units are not
+interchangeable (b3, for instance, is 25 episodes and 27 calls).*
 
 Travel is the decisive arm, and it lands where §3 predicts. With reads flowing, all 21 cells
 delivered the payload, the gate refused 15 calls on contracts, and no call was refused for being
