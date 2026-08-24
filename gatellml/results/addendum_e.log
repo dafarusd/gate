@@ -1,1 +1,8 @@
 === 08:48:58 START l2-slack-attack-ungated ===
+=== 08:53:29 DONE l2-slack-attack-ungated rc=0 ===
+=== 08:53:29 START l2-slack-attack-gate ===
+=== 08:58:08 DONE l2-slack-attack-gate rc=0 ===
+=== 08:58:08 START l2-slack-attack-gB ===
+=== l2-slack-attack-gB FAILED rc=2 ===
+=== 08:58:09 DONE l2-slack-attack-gB rc=2 ===
+=== 08:58:09 START l4-travel-attack-ungated ===

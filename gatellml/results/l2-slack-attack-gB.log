@@ -1,0 +1,9 @@
+usage: run_defended.py [-h] [--suite SUITE]
+                       [--provider {local,venice,venice-prompt}] --model-id
+                       MODEL_ID [--attack ATTACK]
+                       [--user-tasks [USER_TASKS ...]]
+                       [--injection-tasks [INJECTION_TASKS ...]] --logdir
+                       LOGDIR [--gate GATE]
+                       [--gatellm-manifest GATELLM_MANIFEST] [--spotlight]
+                       [--benign-only] [--benchmark-version BENCHMARK_VERSION]
+run_defended.py: error: unrecognized arguments: gatellm
