@@ -9,7 +9,7 @@ def summarize(logdir: Path) -> dict:
         f for f in all_json
         if f.name.startswith("injection_task_")
         and len(f.parents) >= 3
-        and f.parents[2].name.startswith("user_task_")
+        and f.parents[1].name.startswith("user_task_")
     ]
     calib = [f for f in all_json if f not in cells]
     total = len(cells)
