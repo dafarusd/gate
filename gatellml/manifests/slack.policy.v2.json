@@ -1,0 +1,134 @@
+{
+  "tools": [
+    {
+      "name": "send_direct_message",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "recipient"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "body"
+        }
+      ]
+    },
+    {
+      "name": "send_channel_message",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "channel"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "body"
+        }
+      ]
+    },
+    {
+      "name": "post_webpage",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "url"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "content"
+        }
+      ]
+    },
+    {
+      "name": "invite_user_to_slack",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "user"
+        },
+        {
+          "kind": "atom_in_request",
+          "arg": "user_email"
+        }
+      ]
+    },
+    {
+      "name": "add_user_to_channel",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "user"
+        },
+        {
+          "kind": "recipient_traceable",
+          "arg": "channel"
+        }
+      ]
+    },
+    {
+      "name": "remove_user_from_slack",
+      "effects": [
+        "mutate"
+      ],
+      "requires": [
+        {
+          "kind": "any_arg_traceable",
+          "args": [
+            "user"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "get_webpage",
+      "effects": [
+        "read"
+      ],
+      "requires": [
+        {
+          "kind": "domain_in_request",
+          "arg": "url"
+        }
+      ]
+    },
+    {
+      "name": "get_channels",
+      "effects": [
+        "read"
+      ]
+    },
+    {
+      "name": "get_users_in_channel",
+      "effects": [
+        "read"
+      ]
+    },
+    {
+      "name": "read_channel_messages",
+      "effects": [
+        "read"
+      ]
+    },
+    {
+      "name": "read_inbox",
+      "effects": [
+        "read"
+      ]
+    }
+  ]
+}
