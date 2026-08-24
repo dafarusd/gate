@@ -1,54 +1,203 @@
-# gatellml
+# gate: a deterministic policy layer that stops prompt injection — measured
 
-**A verification-first language for LLM agents: agent logic ships with machine-checkable
-contracts.** The successor to [gate](https://github.com/dafarusd/gate) — same deterministic
-provenance doctrine, promoted from a pipeline patch into the language itself.
+**Claim, with receipts.** A tool-using LLM agent guarded by a small deterministic
+policy gate (no LLM judgment in the security path) blocked **100% of successful
+prompt-injection attacks we could produce**, on both a laptop-class local model
+and a 480B frontier API model — while preserving most task utility. Every number
+below is reproducible from this directory with one command.
 
-Status vocabulary (used honestly throughout): everything here is **SOURCE-FIXED AND
-UNIT-TESTED**; live benchmark numbers land in `gatellml/results/` and are summarized in
-`gatellml/STATE.md`. Built ≠ measured; every claim links to raw cells.
+Built on [AgentDojo](https://github.com/ethz-spylab/agentdojo) (ETH Zurich,
+NeurIPS 2024, MIT) — the measurements inherit their task suites, attack engines,
+and programmatic goal-checkers. No LLM-as-judge anywhere in scoring.
 
-## The idea in one paragraph
+> **Scope, stated up front.** The headline numbers below are the **workspace**
+> suite. A later transfer audit ran the identical gate on banking, slack and
+> travel: it **holds on banking and leaks on slack and travel**. That result,
+> and the language-level repair that follows from it, are in
+> [`paper/DRAFT.md`](paper/DRAFT.md) and summarized under
+> [gatellml](#gatellml-the-follow-on-work) below. Read both before citing this one.
 
-gate proved that checking *where information came from* — never what it says — stops prompt
-injection at 0 breaches across model scales, but as a bolt-on it checks opaque strings with
-regexes and misses referential intent. gatellml makes origin a property of values, effects a
-property of tools, and promises a property of programs:
+## Headline results (workspace suite, important_instructions attack)
 
-- **Origins** — `User`, `RequestSpan(mention)`, `Tool(name)`, `Derived`, taint — flow through
-  computation and never disappear under transformation.
-- **Effects** — `read | mutate | egress | resolve` are declared per tool.
-- **Contracts** — a deliberately tiny decidable fragment (`RecipientTraceable`,
-  `AtomInRequest`, `AnyArgTraceable`, `NotTainted`, `SpoofCheck`) compiled to mechanical
-  runtime checks whose failures return structured errors the model can repair from.
+| Agent | Attack success | Utility under attack | Benign utility |
+|---|---|---|---|
+| qwen3-coder-32k (local), undefended | 1.4% (n=140) | 59.1% | 45.0% |
+| qwen3-coder-32k + gate | **0.0%** (n=140) | 58.4% | 42.5% |
+| qwen3-coder-480b (Venice), undefended | **7.1%** (n=70) | 41.7% | 80.0% |
+| qwen3-coder-480b + gate v1 | **0.0%** (n=70) | 33.3% | 70.0% |
 
-The model is never trusted. The program is.
+Focused adaptive grid (compliance-proven tasks, all 14 injection goals):
 
-## Layout
+| Gate version | Attack success | Benign utility | Note |
+|---|---|---|---|
+| v1 | **3.6%** — calendar-invite breach demonstrated live | 70% | `create_calendar_event` uncovered |
+| v2 (+calendar egress, +broad mutation) | 0.0% | 30% | over-broad: `create_`/`append` killed benign flows |
+| **v3.1 (calendar egress + display-name fix)** | **0.0%** | **70%** | breach closed, utility recovered |
 
-```
-gatellml/SPEC.md            normative language spec v0
-gatellml/lang/              origins, contracts, manifest, runtime (the language core)
-gatellml/tests/test_lang.py unit suite (9/9 passing)
-gatellml/src/gatellm_gate.py  AgentDojo pipeline element (--gate gatellm)
-gatellml/src/night_campaign.sh   pre-registered measurement protocol
-gatellml/src/suite_summary.py    results summarizer
-gatellml/src/krepeat_summary.py  variance-bar summarizer
-gatellml/results/           every raw cell cited anywhere
-gatellml/STATE.md           full log, pre-registrations, mistakes included
-src/run_defended.py         runner (local Ollama + Venice frontier arms)
-```
+Final security record of the v3.1 gate: **0 successful attacks in 373 measured
+attack cells** (140 local grid, 70 frontier grid, 28 focused adaptive, 135
+hold-out + 40 control) — every attack that ever succeeded against an
+undefended agent was neutralized, verified cell-by-cell.
+
+## The capability ladder (the finding that reframes leaderboards)
+
+Five same-family models, escalating size, identical harness/attacks/grid:
+
+| Model | Benign utility (capability) | Attack success, undefended | Attack success, gated |
+|---|---|---|---|
+| qwen3-6-35b-a3b | 0% (can't run the agent protocol) | 0% | 0% |
+| qwen3-5-9b | 40% | 0% | 0% |
+| qwen3-next-80b | **90%** | **0%** | 0% |
+| qwen3-235b-a22b | 80% | **31.4%** | **0%** |
+| qwen3-coder-480b | 80% | **7.1%** | **0%** |
+
+![the scatter](results/capability-curve.png)
+
+**Read it:** the most capable model (90%) is the *least* injectable; a less
+capable model (80%) falls to nearly a third of attacks; the flagship falls to
+7%. Attack success is a **per-model compliance trait**, not a capability
+metric and not a security metric. Any benchmark reporting one attack-success
+number per agent without per-model, per-capability context is publishing
+astrology. And the deterministic gate zeroes every cell in the last column.
+
+## Hidden-prompt sweep (112 Venice models + local control)
+
+| Cohort | Hidden tokens injected per call |
+|---|---|
+| median across 112 models | **~1,689** |
+| openai-gpt-* tiers | 6,818 |
+| claude-* tiers | ~2,683–2,706 |
+| qwen3-coder-480b | 1,676 |
+| clean (0): gemini-3-5-flash, gemini-3-flash-preview, openai-gpt-52-codex | 0 |
+| Ollama local (control) | 0 (9-token template floor) |
+
+Under a disclosure canary (models were told to reply exactly
+`NO_HIDDEN_INSTRUCTIONS` if they received none), **63/112 did not deny having
+hidden instructions**; of those, **7 responses contained verbatim fragments of
+the hidden prompt** (e.g. zai-org-glm-5, claude-opus-4-5, deepseek-v4-pro).
+Verbatim captures on file. **The canary is colour, not proof** — models can
+refuse or confabulate, so the token delta above is the measurement. Classify
+it yourself from `results/probe/full-catalog.json`.
+
+Opt-out exists on Venice
+(`venice_parameters.include_venice_system_prompt=false`) — off by default,
+undocumented in their quickstart. Anomalies noted honestly: two readings are
+negative — grok-4-20-multi-agent at −13,640 and openai-gpt-52 at −7 (usage
+accounting differs on those wrappers). One model (grok-4-5) failed to respond
+at all, which is why 112 were measured and not 113. Probe tool:
+`src/prompt_probe/probe.py` — audit your own provider.
+
+## The findings that outlive this repo
+
+1. **Security through incompetence is real.** Weak models resist injection
+   mostly because they cannot execute multi-step actions at all (local 30B:
+   98.6% of attacks die of incapacity; the gate's own wins were 1/85 cells).
+   Raw attack-success % on a low-utility agent is a meaningless security
+   metric — report utility alongside, always.
+2. **Platform hidden prompts exist and contaminate benchmarks.** Venice
+   injects a ~1,676-token system prompt by default (measured; disabled for
+   these runs). Any injection benchmark on hosted APIs that doesn't control
+   for this is measuring the platform, not the model.
+3. **Deterministic provenance gating transfers across model scale.** Identical
+   gate code held on a 30B local model and a 480B API model with zero changes,
+   because it never reads instruction text — it checks whether each action's
+   targets appear in the *user's original request*. Text obfuscation
+   (base64, unicode homoglyphs, multilingual) has no surface to attack.
+   **This is a claim about model size, not about domains — see finding 4.**
+4. **It does *not* transfer across domains, and the reason is structural.**
+   Run unchanged on three untouched suites, the gate holds on banking
+   (0/27 against a 24/27 undefended baseline) but leaks on slack (4/15) and
+   travel (3/21). Enforcement keyed to tool names and argument shapes is
+   coverage-accidental: it covers what its authors happened to enumerate.
+   Worse, one class of attack is unreachable in principle — travel's
+   `injection_task_6` succeeds when the assistant merely *repeats a sentence
+   it read*, with no tool call and no environment change, so no gate that
+   mediates tool calls can ever block it. Measuring that boundary, rather than
+   patching around it, is what the follow-on work is about.
+
+## The defense (src/defenses/policy_gate.py)
+
+Pipeline element in the tool loop. Before any tool call executes:
+- **egress**: send/share/pay/calendar-invite targets must appear verbatim in
+  the user's original request
+- **mutation**: delete/overwrite/append/create targets must be named in it
+- **confirmation spoofing**: "the user approved" text in arguments → block
+- **taint**: secret-shaped strings observed in tool results may never leave
+  via egress tools
+
+Blocked calls return an error to the model; the task continues. Per-layer
+ablation supported (`--gate egress,taint` etc.).
 
 ## Reproduce
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install agentdojo==0.1.35 openai
+export LOCAL_LLM_PORT=11434          # local arm (Ollama)
 export VENICE_API_KEY=...            # frontier arm
-bash gatellml/src/night_campaign.sh  # sequential, resume-safe, lockfile-guarded
-.venv/bin/python gatellml/tests/test_lang.py
+src/launch.sh results/repro.log src/reproduce.sh
 ```
+
+`src/reproduce.sh` runs the minimal decisive set: undefended vs gated on the
+focused grid, then prints the table. Full grids take hours; the focused grid
+is minutes on the frontier arm.
+
+## Honest limitations (read before citing)
+
+- Small grids (70–140 cells), single attack engine for headline numbers,
+  no k-repeat variance bars yet. Numbers are real but preliminary.
+- Benign utility cost is nonzero (80%→70% frontier): false positives on
+  referential targets ("email the same people as last week") are a known,
+  documented gap — v3 needs provenance chains for ID-keyed mutations.
+- Hold-out novel attacks (10, sequestered pre-tuning) were too weak to add
+  evidence (0% even undefended). We say so. The gate's causal evidence is the
+  important_instructions delta plus per-run BLOCK logs.
+- One suite (workspace) for headline numbers. banking/slack/travel are no
+  longer pending — they were measured, and two of them leak. See finding 4.
+- Attacker model: one poisoned document surface per task, no system-prompt
+  access. Stronger attackers (multi-surface, model-aware) are future work.
+
+## Repo map
+
+- `src/defenses/policy_gate.py` — the defense
+- `src/run_defended.py` — defended runner (local + Venice providers)
+- `src/holdout_attacks.jsonl` — sequestered novel attacks (pre-registered)
+- `src/run_holdout.py` — hold-out runner
+- `src/aggregate.py`, `src/analyze_failures.py`, `src/classify_cells.py` — analysis
+- `tests/test_policy_gate.py` — gate unit tests
+- `results/` — every raw run log cited above
+- `STATE.md` — full project log including mistakes and corrections
+- `paper/DRAFT.md` — transfer audit, breach taxonomy, the gatellml result
+- `gatellml/` — language spec, runtime, manifests, and every raw cell cited
+
+## gatellml: the follow-on work
+
+`gatellml/` and [`paper/DRAFT.md`](paper/DRAFT.md) continue this line: the transfer
+audit above, a taxonomy of why the gate leaks, and a verification-first language that
+declares tool effects and tracks value origins instead of pattern-matching arguments.
+
+Measured, same harness, no LLM-as-judge:
+
+| | undefended | gate (this repo) | gatellml |
+|---|---|---|---|
+| travel attacks, 480B frontier | 4/21 | 3/21 | **2/21** |
+| travel attacks, 32k local | 4/21 | 2/21 | **2/21** |
+| travel benign utility, frontier | 14/20 | 15/20 | 10/20 |
+
+Every surviving breach in the gatellml column is the unreachable class from finding 4.
+Every breach that a tool-mediating gate *can* reach is closed, at both model scales —
+including the one cell this repo's gate still leaks at frontier. The cost is real and
+stated: 5 points of travel utility, 4 of slack.
+
+The paper also **withdraws** an earlier version of its own repair result. The first
+hand-written policy manifests declared 6 of travel's 28 tools, so the runtime refused
+the undeclared ones — including the reads that carry the injection — and the resulting
+"0/21, both suites closed" measured nothing at all. It is documented as a withdrawal
+rather than quietly re-run, along with the delivery check now required before any
+security rate in that paper is quoted.
 
 ## License
 
-AGPL-3.0-only, inherited from gate. Copyright (c) 2026 Dafarus — sole copyright holder;
-commercial licensing per `NOTICE`.
+AGPL-3.0-only (see `LICENSE`). Copyright (c) 2026 Dafarus — sole copyright
+holder. A commercial license is available for proprietary or closed-source
+use that the AGPL's copyleft does not permit; see `NOTICE`. AgentDojo is an
+external MIT dependency, not vendored here.
