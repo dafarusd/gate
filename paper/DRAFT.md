@@ -103,6 +103,12 @@ PolicyGate 5/5, travel utask0×inj6 under PolicyGate 5/5 (Addendum D packs). Att
 is therefore cell-heterogeneous: some cells are day-unstable, others are fully deterministic.
 Both regimes are now measured; all headline claims in this paper are grid-based regardless.
 
+## 5.5 Off-frontier replication (Addendum E — in flight)
+
+qwen3-coder-32k local arm, identical harness. Slack attacks so far: undefended 1/15 attack
+success (utility 10/15) — the incapacity caveat was pre-registered; comparison remains live.
+Gate 0/15 (utility 5/15). Remaining arms complete overnight; table lands here. [⏳]
+
 ## 6. Limitations
 
 One attack engine (important_instructions); single frontier model per arm tonight; class-1
