@@ -109,3 +109,4 @@ declared-effect gating cannot block it without domain policy on reads — docume
 | 2026-08-23 ~21:0x | Lang core v0 + bridge committed; 9/9 unit tests; smoke cell: block fired, attack failed. Addendum A frozen. |
 | 2026-08-23 ~20:3x | Project created as local clone of gate @ 21efa5c, branch `gatellml`. Venv built, agentdojo 0.1.35 verified, suites load. Protocol above frozen and committed BEFORE first run. |
 | 2026-08-23 ~21:1x | C-repeats complete: decisive cell did NOT reproduce (c1 gated 0/10, c2 ungated 0/7 attack success; ±0.00). Confirms compliance-trait instability of single cells; grid-based claims unaffected. |
+| 2026-08-23 ~21:2x | PROTOCOL DEVIATION caught: gw1 implemented with 10 tasks, pre-registration said 40. Correction pre-registered here BEFORE fix: gw1-full will run all 40 workspace benign tasks under gatellm after Addendum A completes; gw1 (10-task slice) remains on disk untouched. |
