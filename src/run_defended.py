@@ -103,7 +103,7 @@ class VeniceClient:
         return getattr(self._inner, name)
 
 
-def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provider: str = "local") -> AgentPipeline:
+def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provider: str = "local", gatellm_manifest: str | None = None) -> AgentPipeline:
     if provider == "venice":
         # VENICE_API_KEY passed straight from env; never read, never logged.
         client = VeniceClient(
@@ -148,7 +148,7 @@ def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provid
 
     if "gatellm" in gate_layers:
         from gatellm_gate import GatellmGate
-        manifest_path = getattr(args, "gatellm_manifest", None)
+        manifest_path = gatellm_manifest
         enforcement_element = GatellmGate(manifest_path=manifest_path)
     else:
         enforcement_element = gate
@@ -182,7 +182,7 @@ def main() -> None:
 
     gate_layers = {s.strip() for s in args.gate.split(",") if s.strip()}
     suite = get_suite(args.benchmark_version, args.suite)
-    pipeline = build_pipeline(args.model_id, gate_layers, args.spotlight, provider=args.provider)
+    pipeline = build_pipeline(args.model_id, gate_layers, args.spotlight, provider=args.provider, gatellm_manifest=args.gatellm_manifest)
     logdir = Path(args.logdir)
 
     with OutputLogger(str(logdir)):
