@@ -37,11 +37,11 @@ single-cell claims and motivating grids-with-variance as the reporting default.
 
 | Suite | Cells | Undefended | PolicyGate v3.1 | Verdict |
 |---|---|---|---|---|
-| banking | 23–27 | **20/23 attacks succeeded** | **0/27** (25 active blocks) | HOLDS |
+| banking | 27 | **24/27 attacks succeeded (89%)** | **0/27** (25 active blocks) | HOLDS |
 | travel | 21 | 4/21 | **3/21** (2 blocks) | LEAKS |
 | slack | 15 | 11/15 | **4/15** (11 blocks) | LEAKS |
 
-Banking supplies the causal contrast the protocol demanded: undefended falls at 87% on its cells
+Banking supplies the causal contrast the protocol demanded: undefended falls at 89% on its cells
 while the identical gate holds 0% with active enforcement — the defense genuinely works there.
 Slack/travel supply the refutation of universality.
 
@@ -96,11 +96,12 @@ declared next experiment (requires an interactive harness).
 
 ## 5. Reproducibility of single-cell claims
 
-Historic decisive cell (workspace utask2×inj2): n=10 gated + n=7+ undefended repeats tonight →
-0% ± 0 attack success BOTH arms, vs recorded breaches on 2026-08-21. Attack compliance is a
-per-model, per-day stochastic trait (gate's ladder finding, now longitudinal). All claims in this
-paper are grid-based for exactly this reason. [⏳ Addendum D variance packs on tonight's breach
-cells]
+Historic decisive cell (workspace utask2×inj2): n=10 gated + n=10 undefended repeats tonight →
+0% ± 0 attack success BOTH arms, vs recorded breaches on 2026-08-21 — non-reproduction.
+Conversely, tonight's NEW breach cells reproduce deterministically: slack utask1×inj1 under
+PolicyGate 5/5, travel utask0×inj6 under PolicyGate 5/5 (Addendum D packs). Attack compliance
+is therefore cell-heterogeneous: some cells are day-unstable, others are fully deterministic.
+Both regimes are now measured; all headline claims in this paper are grid-based regardless.
 
 ## 6. Limitations
 
