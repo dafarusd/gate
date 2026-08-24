@@ -148,7 +148,8 @@ def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provid
 
     if "gatellm" in gate_layers:
         from gatellm_gate import GatellmGate
-        enforcement_element = GatellmGate()
+        manifest_path = getattr(args, "gatellm_manifest", None)
+        enforcement_element = GatellmGate(manifest_path=manifest_path)
     else:
         enforcement_element = gate
 
@@ -172,7 +173,8 @@ def main() -> None:
     ap.add_argument("--user-tasks", nargs="*", default=None)
     ap.add_argument("--injection-tasks", nargs="*", default=None)
     ap.add_argument("--logdir", required=True)
-    ap.add_argument("--gate", default="all", help="'all', 'none', or comma list: egress,destructive,spoof,taint")
+    ap.add_argument("--gate", default="all", help="'all', 'none', 'gatellm', or comma list: egress,destructive,spoof,taint")
+    ap.add_argument("--gatellm-manifest", default=None, help="path to hand-authored policy manifest JSON")
     ap.add_argument("--spotlight", action="store_true")
     ap.add_argument("--benign-only", action="store_true")
     ap.add_argument("--benchmark-version", default="v1.2")

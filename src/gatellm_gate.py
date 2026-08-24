@@ -73,8 +73,9 @@ def build_manifest(runtime: FunctionsRuntime) -> Manifest:
 class GatellmGate(BasePipelineElement):
     name = "gatellm_gate"
 
-    def __init__(self) -> None:
-        self._manifest: Manifest | None = None
+    def __init__(self, manifest: Manifest | None = None, manifest_path: str | None = None) -> None:
+        self._manifest = manifest
+        self._manifest_path = manifest_path
 
     def _context(self, messages) -> tuple[Episode, list[str]]:
         user_req = ""
@@ -108,6 +109,10 @@ class GatellmGate(BasePipelineElement):
         if not tool_calls:
             return query, runtime, env, messages, extra_args
 
+        if self._manifest is None and self._manifest_path:
+            from gatellml.lang.manifest import manifest_from_dict
+            import json as _json
+            self._manifest = manifest_from_dict(_json.loads(Path(self._manifest_path).read_text()))
         if self._manifest is None:
             self._manifest = build_manifest(runtime)
 

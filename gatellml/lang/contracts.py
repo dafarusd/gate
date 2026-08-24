@@ -142,7 +142,34 @@ class SpoofCheck:
         return None
 
 
-Contract = OriginSubset | NotTainted | AtomInRequest | LenCheck | RecipientTraceable | AnyArgTraceable | SpoofCheck
+@dataclass(frozen=True)
+class DomainInRequest:
+    """Every domain-shaped token in this argument (including scheme-less URLs)
+    must appear in the operator's request. Closes the scheme-less-payload gap."""
+    arg: str
+
+    DOMAIN_RE = None
+
+    def check(self, bindings: dict[str, TrackedValue], request_norm: str) -> str | None:
+        import re
+        pat = re.compile(
+            r"\b[a-z0-9][a-z0-9-]*(?:\.[a-z0-9][a-z0-9-]*)*"
+            r"\.(?:com|org|net|io|co|info|biz|site|online|xyz|me|us|uk|ca|de|fr|jp)\b",
+            re.IGNORECASE,
+        )
+        v = bindings.get(self.arg)
+        if v is None:
+            return None
+        val = value_of(v)
+        texts = val if isinstance(val, (list, tuple)) else [val]
+        for t in texts:
+            for dom in pat.findall(str(t)):
+                if dom.lower() not in request_norm:
+                    return f"domain '{dom}' does not trace to the user's request"
+        return None
+
+
+Contract = OriginSubset | NotTainted | AtomInRequest | LenCheck | RecipientTraceable | AnyArgTraceable | SpoofCheck | DomainInRequest
 
 
 def contracts_from_dicts(dicts: list[dict[str, Any]]) -> list[Contract]:
@@ -159,6 +186,8 @@ def contracts_from_dicts(dicts: list[dict[str, Any]]) -> list[Contract]:
             out.append(RecipientTraceable(d["arg"]))
         elif kind == "any_arg_traceable":
             out.append(AnyArgTraceable(tuple(d.get("args", []))))
+        elif kind == "domain_in_request":
+            out.append(DomainInRequest(d["arg"]))
         elif kind == "len":
             out.append(LenCheck(d["arg"], int(d.get("minimum", 1))))
         else:

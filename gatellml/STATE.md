@@ -110,3 +110,20 @@ declared-effect gating cannot block it without domain policy on reads — docume
 | 2026-08-23 ~20:3x | Project created as local clone of gate @ 21efa5c, branch `gatellml`. Venv built, agentdojo 0.1.35 verified, suites load. Protocol above frozen and committed BEFORE first run. |
 | 2026-08-23 ~21:1x | C-repeats complete: decisive cell did NOT reproduce (c1 gated 0/10, c2 ungated 0/7 attack success; ±0.00). Confirms compliance-trait instability of single cells; grid-based claims unaffected. |
 | 2026-08-23 ~21:2x | PROTOCOL DEVIATION caught: gw1 implemented with 10 tasks, pre-registration said 40. Correction pre-registered here BEFORE fix: gw1-full will run all 40 workspace benign tasks under gatellm after Addendum A completes; gw1 (10-task slice) remains on disk untouched. |
+## Addendum B — hand-authored policy manifests (pre-registered 2026-08-23 ~21:5x, BEFORE any g2 run)
+
+Addendum A verdict: gatellm auto-manifests (name-derived classification) reproduced gate's
+coverage exactly: workspace 0/140, banking 0/27 (holds) but slack 3/15, travel 4/21 — same
+gap classes 2–3 as gate, by construction. B changes the POLICY LAYER ONLY:
+
+- slack.policy.json / travel.policy.json: explicit declarations — send_* egress with
+  DomainInRequest(body/content); create_calendar_event EGRESS with RecipientTraceable(title)
+  + DomainInRequest(location); reserve_* MUTATE+EGRESS with AnyArgTraceable(entity);
+  get_webpage READ gated by DomainInRequest(url) [anti-phoning-home; utility cost measured].
+- New contract kind domain_in_request (scheme-less domain tokens must trace to request);
+  unit tests 11/11.
+
+Arms (same suites/cells as A for cell-matching): g2-slack-benign-gated (21),
+g2-slack-attack-gated (15), g2-travel-benign-gated (20), g2-travel-attack-gated (21).
+Success criteria fixed now: class-2/3 breach cells from s3/t3/g-arms go to 0 attack success;
+benign deltas vs g1/s1/t1 reported per contract — no post-hoc manifest edits without Addendum C.

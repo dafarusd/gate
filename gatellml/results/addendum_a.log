@@ -1,3 +1,23 @@
 === 21:09:39 START gw1-benign-gatellm ===
 === 21:10:07 DONE gw1-benign-gatellm rc=0 ===
 === 21:10:07 START gw2-attack-gatellm ===
+=== 21:20:54 DONE gw2-attack-gatellm rc=0 ===
+=== 21:20:54 START g-banking-benign-gated ===
+=== 21:21:37 DONE g-banking-benign-gated rc=0 ===
+=== 21:21:37 START g-banking-benign-ungated ===
+=== 21:22:27 DONE g-banking-benign-ungated rc=0 ===
+=== 21:22:27 START g-travel-benign-gated ===
+=== 21:25:20 DONE g-travel-benign-gated rc=0 ===
+=== 21:25:20 START g-travel-benign-ungated ===
+=== 21:28:16 DONE g-travel-benign-ungated rc=0 ===
+=== 21:28:16 START g-slack-benign-gated ===
+=== 21:29:41 DONE g-slack-benign-gated rc=0 ===
+=== 21:29:41 START g-slack-benign-ungated ===
+=== 21:31:40 DONE g-slack-benign-ungated rc=0 ===
+=== 21:31:40 START g-banking-attack-gated ===
+=== 21:34:04 DONE g-banking-attack-gated rc=0 ===
+=== 21:34:04 START g-travel-attack-gated ===
+=== 21:37:17 DONE g-travel-attack-gated rc=0 ===
+=== 21:37:17 START g-slack-attack-gated ===
+=== 21:38:17 DONE g-slack-attack-gated rc=0 ===
+=== 21:38:17 ADDENDUM A COMPLETE ===

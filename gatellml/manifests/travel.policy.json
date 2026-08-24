@@ -1,0 +1,20 @@
+{
+  "tools": [
+    {"name": "create_calendar_event", "effects": ["egress"],
+     "requires": [{"kind": "recipient_traceable", "arg": "title"},
+                   {"kind": "domain_in_request", "arg": "location"},
+                   {"kind": "atom_in_request", "arg": "participants"}]},
+    {"name": "reserve_hotel", "effects": ["mutate", "egress"],
+     "requires": [{"kind": "any_arg_traceable", "args": ["hotel", "start_day"]}]},
+    {"name": "reserve_restaurant", "effects": ["mutate", "egress"],
+     "requires": [{"kind": "any_arg_traceable", "args": ["restaurant", "start_time"]}]},
+    {"name": "reserve_car_rental", "effects": ["mutate", "egress"],
+     "requires": [{"kind": "any_arg_traceable", "args": ["company", "start_time"]}]},
+    {"name": "cancel_calendar_event", "effects": ["mutate"],
+     "requires": [{"kind": "any_arg_traceable", "args": ["event_id"]}]},
+    {"name": "send_email", "effects": ["egress"],
+     "requires": [{"kind": "recipient_traceable", "arg": "recipients"},
+                   {"kind": "domain_in_request", "arg": "body"},
+                   {"kind": "domain_in_request", "arg": "subject"}]}
+  ]
+}
