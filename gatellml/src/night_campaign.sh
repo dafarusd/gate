@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 # gatellml overnight campaign — pre-registered arms, sequential, resume-safe.
 set -u
-cd "$(dirname "$0")/.."
+REPO="$(cd "$(dirname "$0")/../.." && pwd)"
+cd "$REPO"
 PY=.venv/bin/python
 RUN="src/run_defended.py"
 MODEL=qwen3-coder-480b-a35b-instruct-turbo
