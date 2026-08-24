@@ -64,12 +64,21 @@ astrology. And the deterministic gate zeroes every cell in the last column.
 | clean (0): gemini-3-5-flash, gemini-3-flash-preview, openai-gpt-52-codex | 0 |
 | Ollama local (control) | 0 (9-token template floor) |
 
-48/112 models quoted or paraphrased the hidden instructions under a simple
-disclosure canary (verbatim captures on file). Opt-out exists on Venice
+Under a disclosure canary (models were told to reply exactly
+`NO_HIDDEN_INSTRUCTIONS` if they received none), **63/112 did not deny having
+hidden instructions**; of those, **7 responses contained verbatim fragments of
+the hidden prompt** (e.g. zai-org-glm-5, claude-opus-4-5, deepseek-v4-pro).
+Verbatim captures on file. **The canary is colour, not proof** — models can
+refuse or confabulate, so the token delta above is the measurement. Classify
+it yourself from `results/probe/full-catalog.json`.
+
+Opt-out exists on Venice
 (`venice_parameters.include_venice_system_prompt=false`) — off by default,
-undocumented in their quickstart. Anomaly noted honestly:
-grok-4-20-multi-agent shows −13,640 (usage accounting differs on that
-wrapper). Probe tool: `src/prompt_probe/probe.py` — audit your own provider.
+undocumented in their quickstart. Anomalies noted honestly: two readings are
+negative — grok-4-20-multi-agent at −13,640 and openai-gpt-52 at −7 (usage
+accounting differs on those wrappers). One model (grok-4-5) failed to respond
+at all, which is why 112 were measured and not 113. Probe tool:
+`src/prompt_probe/probe.py` — audit your own provider.
 
 ## The three findings that outlive this repo
 

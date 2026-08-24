@@ -318,8 +318,12 @@ Owner is checking Venice balance; awaiting cap + go.
 - Anomaly documented: grok-4-20-multi-agent −13,640 (usage accounting differs
   on multi-agent wrapper; flagged, not hidden).
 - Ollama local control: 9 tokens (template floor) → zero hidden content.
-- 48/112 models attempted disclosure under canary; quotable text on file
-  (e.g. zai-org-glm-5 quoted "The assistant is a helpful AI..." block).
+- Canary: 63/112 did not deny having hidden instructions; 7 responses carried
+  verbatim fragments (e.g. zai-org-glm-5 quoted "The assistant is a helpful
+  AI..." block). Canary is colour, NOT proof — the token delta is the
+  measurement. (Corrected 2026-08-24: the previous "48/112" figure could not be
+  reproduced from full-catalog.json by any classification and had no script
+  behind it.)
 - Data: results/probe/full-catalog.json
 
 ## #1 capability ladder (COMPLETE 2026-08-22 ~01:1x EDT)
