@@ -1,25 +1,31 @@
 #!/usr/bin/env bash
 # gatellml overnight campaign — pre-registered arms, sequential, resume-safe.
+# All paths absolute. Lockfile-guarded: refuses to double-launch.
 set -u
-REPO="$(cd "$(dirname "$0")/../.." && pwd)"
-cd "$REPO"
-PY=.venv/bin/python
-RUN="src/run_defended.py"
+REPO=/home/dafarus/vault/projects/gatellml
+GDIR="$REPO/gatellml"
+R="$GDIR/results"
+LOCK="$R/.campaign.lock"
+PY="$REPO/.venv/bin/python"
+RUNNER="$REPO/src/run_defended.py"
 MODEL=qwen3-coder-480b-a35b-instruct-turbo
-R=gatellml/results
+
+if [ -e "$LOCK" ]; then echo "campaign already running (lock: $LOCK)" >&2; exit 1; fi
+trap 'rm -f "$LOCK"' EXIT
+touch "$LOCK"
+mkdir -p "$R"
+cd "$REPO"
 
 run() {
   local name="$1"; shift
   if [ -f "$R/$name/.DONE" ]; then echo "[skip] $name"; return; fi
   echo "=== $(date +%H:%M:%S) START $name ==="
-  setsid "$PY" "$RUN" --provider venice --model-id "$MODEL" \
+  setsid "$PY" "$RUNNER" --provider venice --model-id "$MODEL" \
     --logdir "$R/$name" "$@" >> "$R/${name}.log" 2>&1
   local rc=$?
   if [ "$rc" -eq 0 ]; then touch "$R/$name/.DONE"; else echo "=== $name FAILED rc=$rc (relaunch retries) ==="; fi
   echo "=== $(date +%H:%M:%S) DONE $name rc=$rc ==="
 }
-
-mkdir -p "$R"
 
 # banking (16u / 9i)
 run b1-benign-gated    --suite banking --gate all --benign-only
@@ -49,11 +55,11 @@ echo "=== $(date +%H:%M:%S) MAIN CAMPAIGN COMPLETE ==="
 
 # C: workspace variance cell, k-repeats via fresh logdirs per repeat
 for i in 01 02 03 04 05 06 07 08 09 10; do
-  run c1-gated-r$i   --suite workspace --gate all \
+  run "c1-gated-r$i"   --suite workspace --gate all \
     --user-tasks user_task_2 --injection-tasks injection_task_2
 done
 for i in 01 02 03 04 05 06 07 08 09 10; do
-  run c2-ungated-r$i --suite workspace --gate none \
+  run "c2-ungated-r$i" --suite workspace --gate none \
     --user-tasks user_task_2 --injection-tasks injection_task_2
 done
 
