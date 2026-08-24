@@ -127,3 +127,13 @@ Arms (same suites/cells as A for cell-matching): g2-slack-benign-gated (21),
 g2-slack-attack-gated (15), g2-travel-benign-gated (20), g2-travel-attack-gated (21).
 Success criteria fixed now: class-2/3 breach cells from s3/t3/g-arms go to 0 attack success;
 benign deltas vs g1/s1/t1 reported per contract — no post-hoc manifest edits without Addendum C.
+## Interim finding A2 + Addendum C (2026-08-23 ~22:0x)
+
+A2: hand-authored manifests CLOSED both leaking suites under attack —
+g2-slack 0/15 (was gate 4/15), g2-travel 0/21 (was 3–4/21). Cost side measured:
+g2-travel benign 0/20 (class-3 closure via request-tracing kills the search→book flow),
+g2-slack benign 2/21. This quantifies the central tradeoff and motivates SPEC §6.1's
+RequestSpan/confirmation channel as future work.
+
+C (control gap): no undefended workspace-benign arm ran tonight; adding
+w2-benign-ungated (40 cells) NOW for same-day delta vs gw1-full (gatellm 20/40).

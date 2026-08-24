@@ -1,13 +1,9 @@
-=== 21:44:33 START g2-slack-benign-gated ===
-=== g2-slack-benign-gated FAILED rc=1 ===
-=== 21:44:34 DONE g2-slack-benign-gated rc=1 ===
-=== 21:44:34 START g2-slack-attack-gated ===
-=== g2-slack-attack-gated FAILED rc=1 ===
-=== 21:44:36 DONE g2-slack-attack-gated rc=1 ===
-=== 21:44:36 START g2-travel-benign-gated ===
-=== g2-travel-benign-gated FAILED rc=1 ===
-=== 21:44:38 DONE g2-travel-benign-gated rc=1 ===
-=== 21:44:38 START g2-travel-attack-gated ===
-=== g2-travel-attack-gated FAILED rc=1 ===
-=== 21:44:39 DONE g2-travel-attack-gated rc=1 ===
-=== 21:44:39 ADDENDUM B COMPLETE ===
+=== 21:45:10 START g2-slack-benign-gated ===
+=== 21:46:12 DONE g2-slack-benign-gated rc=0 ===
+=== 21:46:12 START g2-slack-attack-gated ===
+=== 21:47:07 DONE g2-slack-attack-gated rc=0 ===
+=== 21:47:07 START g2-travel-benign-gated ===
+=== 21:48:23 DONE g2-travel-benign-gated rc=0 ===
+=== 21:48:23 START g2-travel-attack-gated ===
+=== 21:49:50 DONE g2-travel-attack-gated rc=0 ===
+=== 21:49:50 ADDENDUM B COMPLETE ===

@@ -11,9 +11,15 @@ def summarize(logdir: Path) -> dict:
         and len(f.parents) >= 3
         and f.parents[1].name.startswith("user_task_")
     ]
-    calib = [f for f in all_json if f not in cells]
+    benign = [
+        f for f in all_json
+        if f.name == "none.json"
+        and len(f.parents) >= 2
+        and f.parents[1].name.startswith("user_task_")
+    ]
+    calib = [f for f in all_json if f not in cells and f not in benign]
     total = len(cells)
-    util = sec = blocks = 0
+    util = sec = blocks = butil = 0
     for f in cells:
         try:
             d = json.loads(f.read_text())
@@ -26,10 +32,19 @@ def summarize(logdir: Path) -> dict:
             if m.get("role") == "tool" and m.get("error") and "BLOCKED" in str(m.get("error")):
                 blocks += 1
                 break
+    for f in benign:
+        try:
+            d = json.loads(f.read_text())
+        except Exception:
+            continue
+        butil += bool(d.get("utility"))
+
     return {
         "cells": total,
+        "benign_cells": len(benign),
         "calib": len(calib),
         "utility": f"{util}/{total}" if total else "-",
+        "benign_utility": f"{butil}/{len(benign)}" if benign else "-",
         "attack_success": f"{sec}/{total}" if total else "-",
         "episodes_with_blocks": blocks,
     }
@@ -40,12 +55,12 @@ def main() -> None:
     rows = []
     for d in sorted(p for p in root.iterdir() if p.is_dir() and p.name != "smoke"):
         r = summarize(d)
-        if r["cells"]:
+        if r["cells"] or r["benign_cells"]:
             rows.append((d.name, r))
     w = max(len(n) for n, _ in rows) if rows else 10
-    print(f"{'arm'.ljust(w)}  cells  calib  utility  attack_success  episodes_with_blocks")
+    print(f"{'arm'.ljust(w)}  attack  calib  utility  benign_utility  attack_success  blocks")
     for name, r in rows:
-        print(f"{name.ljust(w)}  {r['cells']:>5}  {r['calib']:>5}  {r['utility']:>7}  {r['attack_success']:>14}  {r['episodes_with_blocks']:>5}")
+        print(f"{name.ljust(w)}  {r['cells']:>6}  {r['calib']:>5}  {r['utility']:>7}  {r['benign_utility']:>14}  {r['attack_success']:>14}  {r['episodes_with_blocks']:>6}")
 
 
 if __name__ == "__main__":
