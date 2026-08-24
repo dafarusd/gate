@@ -1,0 +1,3 @@
+/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+utility-under-attack: 0/0  attack-success: 0/0

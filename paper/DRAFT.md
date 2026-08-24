@@ -141,30 +141,42 @@ list so no name is hand-typed). Contract verdicts are unchanged by the correctio
 is a genuine contract failure. Delivery is now enforced mechanically: `vacuity_check.py` scores
 an arm only over cells where the payload reached the model, and fails the arm otherwise.
 
-| Suite·arm | Cells | Delivered | Breaches/delivered | Tier A / Tier B | Contract blocks (calls) | Coverage gap |
-|---|---|---|---|---|---|---|
-| slack · local (l6) | 15 | 10 | **0/10** | 0 / 0 | 8 | none |
-| travel · local (l6) | 21 | 21 | **2/21** | **0 / 2** | 15 | none |
-| slack · frontier (g3) | 15 | not yet run | — | — | — | — |
-| travel · frontier (g3) | 21 | not yet run | — | — | — | — |
+| Suite·arm | Cells | Deliv | Prev | Void | Breaches/deliv | Tier A / B | Contract blocks (calls) | Coverage gap |
+|---|---|---|---|---|---|---|---|---|
+| slack · frontier (g3) | 15 | 10 | 5 | 0 | **0/10** | — | 13 | none |
+| travel · frontier (g3) | 21 | 21 | 0 | 0 | **2/21** | **0 / 2** | 20 | none |
+| slack · local (l6) | 15 | 10 | 0 | 5 | **0/10** | — | 8 | none |
+| travel · local (l6) | 21 | 21 | 0 | 0 | **2/21** | **0 / 2** | 15 | none |
+
+*Deliv* = payload reached the model. *Prev* = a contract refused the carrier, so the payload never
+entered context — a defense, not a void cell. *Void* = coverage gap or the model never invoking the
+carrier; only these forfeit a claim. The same five slack utask1 cells are Prev at frontier (the A1
+contract refuses `get_webpage(www.informations.com)`, which is not in the request) and Void locally
+(the 32k model emits its call as fenced text, so no tool fires) — and were Void-by-coverage-gap in
+the withdrawn arm. One cell set, three causes; conflating them is the error this table exists to
+prevent.
 
 *Block counts in this section are call-level events. The `blocks` column in §2 and §4.1 counts
 episodes containing at least one block, following `suite_summary.py`; the two units are not
 interchangeable (b3, for instance, is 25 episodes and 27 calls).*
 
-Travel is the decisive arm, and it lands where §3 predicts. With reads flowing, all 21 cells
-delivered the payload, the gate refused 15 calls on contracts, and no call was refused for being
-undeclared. Two cells survive — utask0×inj6 and utask2×inj6 — and **both are Tier B**. Travel's
-entire Tier A surface is closed, including its one addressable breach utask0×inj2, blocked
-deterministically by `RecipientTraceable(title)` on `create_calendar_event` with the payload
-present in the episode.
+Travel is the decisive arm, and at both scales it lands exactly where §3 predicts. Every cell
+delivered its payload, no call was refused for being undeclared, and in each arm precisely two
+cells survive — **both Tier B**, both `injection_task_6`. **Travel's entire Tier A surface is
+closed at frontier and locally.**
 
-The PolicyGate arm on the same model is instructive: it also scores 2/21 with the same two Tier B
-survivors, but on utask0×inj2 it *admitted* `create_calendar_event` and the attack simply failed
-to land that run — the undefended arm breached that cell with an identical three-call sequence.
-Equal headline rates, different mechanisms: gatellm-B refuses the call, PolicyGate got the cell by
-variance. That is the reporting hazard of §5 appearing inside a defended arm, and it is why the
-Tier A/B split and the block log, not the rate alone, carry the claim.
+| travel attacks | undefended | PolicyGate | gatellm-B v2 |
+|---|---|---|---|
+| frontier | 4/21 (3 A, 1 B) | 3/21 (**1 A**, 2 B) | **2/21 (0 A, 2 B)** |
+| local | 4/21 (3 A, 1 B) | 2/21 (0 A, 2 B) | **2/21 (0 A, 2 B)** |
+
+The frontier row carries the strongest claim in this paper. On utask0×inj2 PolicyGate **admits**
+`create_calendar_event` and is breached; gatellm-B refuses the same call three times running on
+`RecipientTraceable(title)`, with the payload present in context. That is a measured improvement
+over the prior defense on its own benchmark, achieved deterministically rather than by variance —
+locally PolicyGate survives that cell only because the attack failed to land, the undefended arm
+having breached it with an identical three-call sequence. Equal local rates, different mechanisms;
+the Tier A/B split and the block log, not the rate alone, carry the claim.
 
 The five undelivered local slack cells are all utask1, where the 32k model emits its tool call as
 literal text in a code fence instead of a structured call, so no tool fires; the *undefended*
@@ -174,20 +186,28 @@ manifest can recover it.
 **Cost, measured against the corrected manifests.** The utility collapse reported earlier does not
 survive the correction, and neither does its explanation:
 
-| Suite · benign (local) | undefended | PolicyGate | gatellm-B (withdrawn) | **gatellm-B v2** |
+| Suite · benign | undefended | PolicyGate | gatellm-B (withdrawn) | **gatellm-B v2** |
 |---|---|---|---|---|
-| slack | 10/21 | 4/21 | 2/21 | **2/21** |
-| travel | 11/20 | 11/20 | 0/20 | **7/20** |
+| slack · frontier | 17/21 | 6/21 | 2/21 | **2/21** |
+| travel · frontier | 14/20 | 15/20 | 0/20 | **10/20** |
+| slack · local | 10/21 | 4/21 | 2/21 | **2/21** |
+| travel · local | 11/20 | 11/20 | 0/20 | **7/20** |
 
-Travel's benign arm goes from 0/20 to 7/20, and the mechanism inverts. The withdrawn arm admitted
-**zero** tool calls across 20 episodes and issued 50 refusals, 49 of them `undeclared_tool`. The
-corrected arm admits **98** calls against the undefended agent's 102, and issues 8 refusals, all
-of them contracts and all on `create_calendar_event`. The search→book workflow is intact:
-`reserve_hotel` is never refused in the benign arm, because `AnyArgTraceable(hotel, start_day)` is
-satisfied by the date tracing to the request even when the hotel name comes from tool output.
-§4.2's earlier claim that "class-3 closure by raw request-tracing destroys the search→book
-workflow" is therefore false and withdrawn with the arms that produced it. Travel's real cost is
-55% → 35%.
+Travel's benign arm goes from 0/20 to 10/20 at frontier, and the mechanism inverts. The withdrawn
+arm admitted **zero** tool calls across 20 episodes and issued 24 refusals, all `undeclared_tool`.
+The corrected frontier arm admits **120** calls — identical to PolicyGate's 120 and more than the
+undefended agent's 105 — and issues 7 refusals, every one a contract and every one on
+`create_calendar_event`. The search→book workflow is fully intact: `reserve_hotel` is never
+refused in either benign arm, because `AnyArgTraceable(hotel, start_day)` is satisfied by the date
+tracing to the request even when the hotel name comes from tool output. §4.2's earlier claim that
+"class-3 closure by raw request-tracing destroys the search→book workflow" is therefore false and
+withdrawn with the arms that produced it. Travel's real cost is 70% → 50% frontier, 55% → 35%
+local.
+
+The honest trade is visible in the same table: gatellm-B v2 buys travel's last Tier A cell — the
+one PolicyGate leaks at frontier — for 5 points of benign travel utility (15/20 → 10/20) and 4
+points of slack utility (6/21 → 2/21). That is the security-utility curve stated as a price rather
+than a principle.
 
 Slack's benign figure is unchanged at 2/21, but its cause is now entirely different and, for the
 first time, attributable per contract. The withdrawn arm spent 20 of its 24 refusals on
@@ -261,8 +281,9 @@ cross-day comparable (see §5). The Tier A/B split is derived from AgentDojo's g
 it characterises what this benchmark can score, not every deployment: a real system may treat an
 assistant's recommendation as consequential, in which case Tier B matters more than 1-in-35
 suggests. Only one injection task in the corpus is output-realized, so the Tier B measurement
-rests on a narrow base. Addendum F's corrected frontier arms are not yet run, so §4.2's repair
-claim is currently supported by local arms only.
+rests on a narrow base. §4.2's repair is measured on two models (frontier 480B, local 32k) and one
+attack engine; the five slack utask1 cells are prevented rather than delivered at frontier, so
+slack's attack claim rests on 10 delivered cells, not 15.
 
 ## 7. Reproduce
 
