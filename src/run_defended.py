@@ -56,11 +56,17 @@ class _VeniceCompletionsProxy:
             c = m.get("content")
             if isinstance(c, list):
                 kept = [b for b in c if (b.get("text") or "").strip()]
-                m["content"] = kept if kept else None
-            elif isinstance(c, str) and not c.strip() and m.get("role") != "assistant":
-                m["content"] = " "
-            if m.get("role") == "assistant" and not m.get("tool_calls") and not m.get("content"):
-                m["content"] = " "
+                if kept:
+                    m["content"] = kept
+                else:
+                    m["content"] = None if (
+                        m.get("role") == "assistant" and m.get("tool_calls")
+                    ) else " "
+            elif c is None or (isinstance(c, str) and not c.strip()):
+                if m.get("role") == "assistant" and m.get("tool_calls"):
+                    m["content"] = None
+                else:
+                    m["content"] = " "
             out.append(m)
         return out
 
