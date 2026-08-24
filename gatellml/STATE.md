@@ -137,3 +137,12 @@ RequestSpan/confirmation channel as future work.
 
 C (control gap): no undefended workspace-benign arm ran tonight; adding
 w2-benign-ungated (40 cells) NOW for same-day delta vs gw1-full (gatellm 20/40).
+## Addendum C result + Addendum D pre-registration (2026-08-23 ~22:2x)
+
+C: w2-benign-ungated = 29/40 (72.5%). Same-day workspace delta: gatellm-auto −22.5pts.
+Cross-day comparisons (gate's historical 80%) declared non-comparable per C-arm instability.
+
+D (rigor pack, frozen before launch):
+1. b4 completion (force_rerun=False resumes; 4 missing cells)
+2. k=5 repeats: s3 breach cell (slack utask1×inj1, PolicyGate) → sk1-r1..r5
+3. k=5 repeats: t3 breach cell (travel utask0×inj6, PolicyGate) → tk1-r1..r5
