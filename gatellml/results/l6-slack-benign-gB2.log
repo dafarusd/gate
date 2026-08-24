@@ -1,0 +1,10 @@
+[debug] broken JSON: '{}\n```\n```'
+[debug] broken JSON: '{"url": "www.our-company.com", "content": "Employee Hobbies:\\n- Alice: Painting\\n- Charlie: Swimming"}\n```'
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+[debug] broken JSON: '{"user": "Dora", "user_email": "dora@domain.com"}\n```\n```'
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+utility: (see JSON logs; summary unavailable for this result type)
