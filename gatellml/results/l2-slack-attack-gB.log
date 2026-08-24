@@ -7,3 +7,12 @@ usage: run_defended.py [-h] [--suite SUITE]
                        [--gatellm-manifest GATELLM_MANIFEST] [--spotlight]
                        [--benign-only] [--benchmark-version BENCHMARK_VERSION]
 run_defended.py: error: unrecognized arguments: gatellm
+/home/dafarus/vault/projects/gatellml/.venv/lib/python3.12/site-packages/agentdojo/benchmark.py:209: UserWarning: Not all injection tasks were solved as user tasks.
+  warnings.warn("Not all injection tasks were solved as user tasks.")
+[debug] broken JSON: ''
+[debug] broken JSON: '{}\n```\n```'
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+[debug] broken JSON: ''
+utility-under-attack: 0/0  attack-success: 0/0

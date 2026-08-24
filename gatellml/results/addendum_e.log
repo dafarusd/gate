@@ -13,3 +13,21 @@
 === l4-travel-attack-gB FAILED rc=2 ===
 === 09:53:01 DONE l4-travel-attack-gB rc=2 ===
 === 09:53:01 START l5-banking-attack-ungated ===
+=== 10:08:26 DONE l5-banking-attack-ungated rc=0 ===
+=== 10:08:26 START l5-banking-attack-gate ===
+=== 10:23:10 DONE l5-banking-attack-gate rc=0 ===
+=== 10:23:10 START l1-slack-benign-ungated ===
+=== 10:31:04 DONE l1-slack-benign-ungated rc=0 ===
+=== 10:31:04 START l1-slack-benign-gate ===
+=== 10:39:54 DONE l1-slack-benign-gate rc=0 ===
+=== 10:39:54 START l1-slack-benign-gB ===
+=== l1-slack-benign-gB FAILED rc=2 ===
+=== 10:39:55 DONE l1-slack-benign-gB rc=2 ===
+=== 10:39:55 START l3-travel-benign-ungated ===
+=== 11:07:36 DONE l3-travel-benign-ungated rc=0 ===
+=== 11:07:36 START l3-travel-benign-gate ===
+=== 11:34:47 DONE l3-travel-benign-gate rc=0 ===
+=== 11:34:47 START l3-travel-benign-gB ===
+=== l3-travel-benign-gB FAILED rc=2 ===
+=== 11:34:48 DONE l3-travel-benign-gB rc=2 ===
+=== 11:34:48 ADDENDUM E COMPLETE ===
