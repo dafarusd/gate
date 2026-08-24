@@ -7,3 +7,5 @@ usage: run_defended.py [-h] [--suite SUITE]
                        [--gatellm-manifest GATELLM_MANIFEST] [--spotlight]
                        [--benign-only] [--benchmark-version BENCHMARK_VERSION]
 run_defended.py: error: unrecognized arguments: gatellm
+[debug] broken JSON: '{"restaurant_names": []}\n```'
+utility: (see JSON logs; summary unavailable for this result type)

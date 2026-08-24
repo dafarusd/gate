@@ -169,3 +169,9 @@ Success criteria fixed now: replication of the SIGN PATTERN (gate leaks slack/tr
 banking; B-manifest closes leaks) counts even at low absolute rates; all deltas reported with
 utility context. Stop condition: owner interrupt or harness failure only.
 | 2026-08-23 ~23:0x | Addendum E in flight. Local slack attack arms complete: ungated 1/15 attack success (utility 10/15) — local model CAN execute some injections, comparison not vacuous; gate 0/15 (utility 5/15). rc=2/"0/0" on gated arms identified as SuiteResults summary quirk; cells verified real from JSONs, DONE markers written manually where complete. gB arms initially failed ($SL missing --gate flag); e2 fixup pre-committed and queued behind lock. |
+
+## FINALIZATION (auto, 2026-08-24 12:36)
+
+All campaigns complete. Full table written to gatellml/results/FINAL_SUMMARY.md.
+Local replication arms (Addendum E/E2) are part of the record; paper §5.5 takes its numbers
+from FINAL_SUMMARY.md lines l*.
