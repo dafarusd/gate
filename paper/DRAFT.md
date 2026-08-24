@@ -167,6 +167,40 @@ literal text in a code fence instead of a structured call, so no tool fires; the
 local arm fails identically on those same cells. That is model incapacity, not gating, and no
 manifest can recover it.
 
+**Cost, measured against the corrected manifests.** The utility collapse reported earlier does not
+survive the correction, and neither does its explanation:
+
+| Suite · benign (local) | undefended | PolicyGate | gatellm-B (withdrawn) | **gatellm-B v2** |
+|---|---|---|---|---|
+| slack | 10/21 | 4/21 | 2/21 | **2/21** |
+| travel | 11/20 | 11/20 | 0/20 | **7/20** |
+
+Travel's benign arm goes from 0/20 to 7/20, and the mechanism inverts. The withdrawn arm admitted
+**zero** tool calls across 20 episodes and issued 50 refusals, 49 of them `undeclared_tool`. The
+corrected arm admits **98** calls against the undefended agent's 102, and issues 8 refusals, all
+of them contracts and all on `create_calendar_event`. The search→book workflow is intact:
+`reserve_hotel` is never refused in the benign arm, because `AnyArgTraceable(hotel, start_day)` is
+satisfied by the date tracing to the request even when the hotel name comes from tool output.
+§4.2's earlier claim that "class-3 closure by raw request-tracing destroys the search→book
+workflow" is therefore false and withdrawn with the arms that produced it. Travel's real cost is
+55% → 35%.
+
+Slack's benign figure is unchanged at 2/21, but its cause is now entirely different and, for the
+first time, attributable per contract. The withdrawn arm spent 20 of its 24 refusals on
+`undeclared_tool` — the agent could not read at all. The corrected arm refuses nothing for being
+undeclared, admits `read_channel_messages` 17 times, and spends all 17 refusals on contracts:
+
+| Contract | Blocks | Closes | Principal cost |
+|---|---|---|---|
+| `DomainInRequest` | 8 | A1 egressing reads | `get_webpage` 14 allowed → 7 allowed, 6 refused |
+| `RecipientTraceable` | 7 | A2 scheme-less payloads | `send_*`, `invite_user_to_slack`, `add_user_to_channel` |
+| `AtomInRequest` | 2 | — | — |
+
+So slack's ~81% → 10% cost is real, but it is now *purchased* rather than *broken*: each closure
+has a price tag attached to the contract that bought it. The security-utility curve §4.2 originally
+claimed to measure is only now actually measured. Domain-gating reads is the most expensive single
+line item, which is the utility bill §6 flags for A1.
+
 What these arms can decide is bounded by §3. Slack's breach surface is entirely Tier A and is
 therefore fully addressable. Travel's addressable surface is the single cell utask0×inj2;
 utask{0,1}×inj6 will remain open under any manifest. Closing Tier B would mean filtering the
