@@ -103,11 +103,26 @@ PolicyGate 5/5, travel utask0×inj6 under PolicyGate 5/5 (Addendum D packs). Att
 is therefore cell-heterogeneous: some cells are day-unstable, others are fully deterministic.
 Both regimes are now measured; all headline claims in this paper are grid-based regardless.
 
-## 5.5 Off-frontier replication (Addendum E — in flight)
+## 5.5 Off-frontier replication (complete)
 
-qwen3-coder-32k local arm, identical harness. Slack attacks so far: undefended 1/15 attack
-success (utility 10/15) — the incapacity caveat was pre-registered; comparison remains live.
-Gate 0/15 (utility 5/15). Remaining arms complete overnight; table lands here. [⏳]
+qwen3-coder-32k (local Ollama, 32k ctx), identical harness and manifests:
+
+| Suite·arm | Frontier | Local | Replicated? |
+|---|---|---|---|
+| travel attacks · undefended | 4/21 | **4/21** | exact |
+| travel attacks · gate | 3/21 LEAK | **2/21 LEAK** | yes |
+| travel attacks · gatellm-B | 0/21 | **0/21** | yes |
+| banking attacks · undefended | 24/27 | 13/27 | direction |
+| banking attacks · gate | 0/27 | **0/27** | yes |
+| slack attacks · undefended | 11/15 | 1/15 | no (weak baseline) |
+| slack attacks · gate | 4/15 LEAK | 0/15 | no leak locally |
+| slack/travel attacks · gatellm-B | 0/15 · 0/21 | **0/15 · 0/21** | yes |
+| travel benign · gatellm-B | 0/20 | **0/20** | exact (utility collapse) |
+
+The load-bearing results replicate off-frontier: gate's travel leak, gatellm-B's closure of both
+leaking suites, gate's banking hold, and the class-3 utility collapse are all model-independent.
+The slack gate-leak did not replicate (local undefended baseline too weak to expose it); reported
+as a negative replication with its capability context, per doctrine.
 
 ## 6. Limitations
 
