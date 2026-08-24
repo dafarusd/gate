@@ -6,3 +6,10 @@
 === l2-slack-attack-gB FAILED rc=2 ===
 === 08:58:09 DONE l2-slack-attack-gB rc=2 ===
 === 08:58:09 START l4-travel-attack-ungated ===
+=== 09:26:46 DONE l4-travel-attack-ungated rc=0 ===
+=== 09:26:46 START l4-travel-attack-gate ===
+=== 09:53:00 DONE l4-travel-attack-gate rc=0 ===
+=== 09:53:00 START l4-travel-attack-gB ===
+=== l4-travel-attack-gB FAILED rc=2 ===
+=== 09:53:01 DONE l4-travel-attack-gB rc=2 ===
+=== 09:53:01 START l5-banking-attack-ungated ===
