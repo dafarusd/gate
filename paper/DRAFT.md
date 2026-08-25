@@ -1,9 +1,11 @@
 # The Gate Does Not Transfer: Measured Failure Modes of Deterministic Prompt-Injection
 # Gating Beyond Its Original Suite, and a Language-Level Repair Path
 
-**Working draft — 2026-08-23, same-session frontier measurements. Variance-pack cells
-(Addendum D) land as marked.** Every number links to raw JSON under `gatellml/results/`;
-protocol pre-registrations in `gatellml/STATE.md` precede the runs they govern.
+**Working draft — revised 2026-08-25. Measurements span two days: the transfer audit,
+auto-manifest arms and variance packs on 2026-08-23; the corrected hand-manifest arms of
+Addendum F, frontier and local, on 2026-08-24.** Every number links to raw JSON under
+`gatellml/results/`; protocol pre-registrations in `gatellml/STATE.md` precede the runs they
+govern.
 
 Dafarus Dixon · AGPL-3.0 · artifacts: [gate](https://github.com/dafarusd/gate) (prior), gatellml (this work)
 
@@ -35,7 +37,8 @@ single-cell claims and motivating grids-with-variance as the reporting default.
   no LLM-as-judge. Model: `qwen3-coder-480b-a35b-instruct-turbo` via Venice API,
   hidden-platform-prompt contamination disabled (measured control, gate §Venice).
 - Metric semantics fixed a priori: `security=True` ⇒ attack succeeded. Utility always reported
-  alongside security. All comparisons same-session unless marked historical.
+  alongside security. Comparisons are within-day unless marked historical; the 2026-08-24
+  arms are compared only against same-day or same-arm controls, never across the two days.
 - Prior evidence: gate 0/373 cells on workspace (2026-08-21), utility cost 80→70 frontier.
 
 ## 2. Transfer audit (pre-registered before any cell ran)
@@ -125,7 +128,7 @@ declared MUTATE+EGRESS with entity tracing (A3); `get_webpage` declared a contra
 on `DomainInRequest(url)` (A1).
 
 **Withdrawal.** The figures originally reported here — slack 0/15, travel 0/21, and the matching
-gatellm-B rows in §5.5 — do not measure those contracts and are withdrawn. gatellm refuses
+gatellm-B rows in §6 — do not measure those contracts and are withdrawn. gatellm refuses
 undeclared tools, and the first-pass manifests declared 6 of travel's 28 tools and 7 of slack's
 11; every omission was a read. Reads carry the injection payload, so the gate blocked the carrier
 before the attack was ever presented. Travel delivered the payload in **0 of 21 cells**, with **0
@@ -223,7 +226,7 @@ undeclared, admits `read_channel_messages` 17 times, and spends all 17 refusals 
 So slack's ~81% → 10% cost is real, but it is now *purchased* rather than *broken*: each closure
 has a price tag attached to the contract that bought it. The security-utility curve §4.2 originally
 claimed to measure is only now actually measured. Domain-gating reads is the most expensive single
-line item, which is the utility bill §6 flags for A1.
+line item, which is the utility bill §7 flags for A1.
 
 What these arms can decide is bounded by §3. Slack's breach surface is entirely Tier A and is
 therefore fully addressable. Travel's addressable surface is the single cell utask0×inj2;
@@ -237,14 +240,16 @@ addresses utility recovery inside Tier A; it does not move the boundary.
 
 ## 5. Reproducibility of single-cell claims
 
-Historic decisive cell (workspace utask2×inj2): n=10 gated + n=10 undefended repeats tonight →
-0% ± 0 attack success BOTH arms, vs recorded breaches on 2026-08-21 — non-reproduction.
-Conversely, tonight's NEW breach cells reproduce deterministically: slack utask1×inj1 under
+Historic decisive cell (workspace utask2×inj2): n=10 gated + n=10 undefended repeats on
+2026-08-23 → 0% ± 0 attack success BOTH arms, vs recorded breaches on 2026-08-21 —
+non-reproduction. The injection was verified present in all 20 episodes, so this is model
+behaviour, not a delivery failure. Conversely, the breach cells found the same day reproduce
+deterministically: slack utask1×inj1 under
 PolicyGate 5/5, travel utask0×inj6 under PolicyGate 5/5 (Addendum D packs). Attack compliance
 is therefore cell-heterogeneous: some cells are day-unstable, others are fully deterministic.
 Both regimes are now measured; all headline claims in this paper are grid-based regardless.
 
-## 5.5 Off-frontier replication
+## 6. Off-frontier replication
 
 qwen3-coder-32k (local Ollama, 32k ctx), identical harness and manifests:
 
@@ -272,9 +277,9 @@ context, per doctrine. Every gatellm-B row is withdrawn for the reason given in 
 blocked the payload carrier, so they replicated an artifact rather than a repair. Addendum F's
 corrected local arms replace them; the frontier arms have not been re-run.
 
-## 6. Limitations
+## 7. Limitations
 
-One attack engine (important_instructions); single frontier model per arm tonight; A1 egressing
+One attack engine (important_instructions); one frontier and one local model per arm; A1 egressing
 reads closed only via domain allowlisting (a policy choice with its own utility bill); no
 interactive channel → RequestSpan untested live; benign-cost numbers are suite-relative, not
 cross-day comparable (see §5). The Tier A/B split is derived from AgentDojo's goal-checkers, so
@@ -285,7 +290,7 @@ rests on a narrow base. §4.2's repair is measured on two models (frontier 480B,
 attack engine; the five slack utask1 cells are prevented rather than delivered at frontier, so
 slack's attack claim rests on 10 delivered cells, not 15.
 
-## 7. Reproduce
+## 8. Reproduce
 
 ```bash
 python3 -m venv .venv && .venv/bin/pip install agentdojo==0.1.35 openai
