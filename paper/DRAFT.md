@@ -7,7 +7,7 @@ Addendum F, frontier and local, on 2026-08-24.** Every number links to raw JSON 
 `gatellml/results/`; protocol pre-registrations in `gatellml/STATE.md` precede the runs they
 govern.
 
-Dafarus Dixon · AGPL-3.0 · artifacts: [gate](https://github.com/dafarusd/gate) (prior), gatellml (this work)
+Dafarus · AGPL-3.0 · artifacts: [gate](https://github.com/dafarusd/gate) (prior), gatellml (this work)
 
 ## Abstract
 
