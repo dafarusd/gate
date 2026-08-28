@@ -201,3 +201,7 @@ AGPL-3.0-only (see `LICENSE`). Copyright (c) 2026 Dafarus — sole copyright
 holder. A commercial license is available for proprietary or closed-source
 use that the AGPL's copyleft does not permit; see `NOTICE`. AgentDojo is an
 external MIT dependency, not vendored here.
+
+---
+
+Built by Dafarus — [@Dafarusd on X](https://x.com/Dafarusd)
