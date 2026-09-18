@@ -6,7 +6,7 @@ from dataclasses import dataclass, field
 from .contracts import Contract, contracts_from_dicts
 
 
-EFFECTS = frozenset({"read", "mutate", "egress", "resolve"})
+EFFECTS = frozenset({"read", "mutate", "egress", "resolve", "create"})
 
 
 @dataclass(frozen=True)
@@ -15,6 +15,10 @@ class ToolSpec:
     effects: frozenset[str]
     requires: tuple[Contract, ...] = ()
     recipient_args: tuple[str, ...] = ()
+    # Arguments the tool's own signature marks optional. Only these may be
+    # "absent" when a model passes a stringly null (cc="None"); a REQUIRED
+    # argument given as "None" is a value, and is traced like any other.
+    optional_args: frozenset[str] = frozenset()
 
     def validated(self) -> "ToolSpec":
         unknown = self.effects - EFFECTS
@@ -39,6 +43,7 @@ def manifest_from_dict(d: dict) -> Manifest:
             effects=frozenset(t.get("effects", [])),
             requires=tuple(contracts_from_dicts(t.get("requires", []))),
             recipient_args=tuple(t.get("recipient_args", [])),
+            optional_args=frozenset(t.get("optional_args", [])),
         ).validated()
         tools[spec.name] = spec
     return Manifest(tools)

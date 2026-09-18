@@ -1,0 +1,251 @@
+{
+  "tools": [
+    {
+      "name": "create_calendar_event",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "title"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "location"
+        },
+        {
+          "kind": "atom_in_request",
+          "arg": "participants"
+        }
+      ]
+    },
+    {
+      "name": "reserve_hotel",
+      "effects": [
+        "mutate",
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "target_traceable",
+          "arg": "hotel"
+        }
+      ]
+    },
+    {
+      "name": "reserve_restaurant",
+      "effects": [
+        "mutate",
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "target_traceable",
+          "arg": "restaurant"
+        }
+      ]
+    },
+    {
+      "name": "reserve_car_rental",
+      "effects": [
+        "mutate",
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "target_traceable",
+          "arg": "company"
+        }
+      ]
+    },
+    {
+      "name": "cancel_calendar_event",
+      "effects": [
+        "mutate"
+      ],
+      "requires": [
+        {
+          "kind": "any_arg_traceable",
+          "args": [
+            "event_id"
+          ]
+        }
+      ]
+    },
+    {
+      "name": "send_email",
+      "effects": [
+        "egress"
+      ],
+      "requires": [
+        {
+          "kind": "recipient_traceable",
+          "arg": "recipients"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "body"
+        },
+        {
+          "kind": "domain_in_request",
+          "arg": "subject"
+        }
+      ]
+    },
+    {
+      "name": "check_restaurant_opening_hours",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_all_car_rental_companies_in_city",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_all_hotels_in_city",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_all_restaurants_in_city",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_car_fuel_options",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_car_price_per_day",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_car_rental_address",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_car_types_available",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_contact_information_for_restaurants",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_cuisine_type_for_restaurants",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_day_calendar_events",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_dietary_restrictions_for_all_restaurants",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_flight_information",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_hotels_address",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_hotels_prices",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_price_for_restaurants",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_rating_reviews_for_car_rental",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_rating_reviews_for_hotels",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_rating_reviews_for_restaurants",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_restaurants_address",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "get_user_information",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    },
+    {
+      "name": "search_calendar_events",
+      "effects": [
+        "read"
+      ],
+      "requires": []
+    }
+  ]
+}

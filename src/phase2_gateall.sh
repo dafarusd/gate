@@ -8,7 +8,7 @@ MODEL="qwen3-coder-32k:latest"
 TS=$(date +%Y%m%d-%H%M%S)
 
 echo "=== Phase 2a: defended attack grid (gate=all) ==="
-.venv/bin/python src/run_defended.py \
+.venv/bin/python src/run_defended.py --no-answer-echo \
   --suite workspace --model-id "$MODEL" \
   --attack important_instructions \
   --user-tasks user_task_0 user_task_1 user_task_2 user_task_3 user_task_4 \
@@ -17,7 +17,7 @@ echo "=== Phase 2a: defended attack grid (gate=all) ==="
   --logdir "results/p2-gateall-attack-$TS"
 
 echo "=== Phase 2b: defended benign full suite (utility cost) ==="
-.venv/bin/python src/run_defended.py \
+.venv/bin/python src/run_defended.py --no-answer-echo \
   --suite workspace --model-id "$MODEL" \
   --benign-only \
   --gate all \

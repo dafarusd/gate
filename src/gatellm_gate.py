@@ -30,10 +30,11 @@ from gatellml.lang.contracts import (
     AtomInRequest,
     RecipientTraceable,
     SpoofCheck,
+    TargetTraceable,
 )
 from gatellml.lang.manifest import Manifest, ToolSpec
-from gatellml.lang.origins import RECIPIENT_ARG_RE, _norm, find_secrets
-from gatellml.lang.runtime import Episode, enforce_call, render_block
+from gatellml.lang.origins import CREATES_RE, RECIPIENT_ARG_RE, _norm, find_secrets
+from gatellml.lang.runtime import Episode, enforce_call, observe_result, render_block
 
 
 EGRESS_TOOL_RE = re.compile(
@@ -51,22 +52,50 @@ def build_manifest(runtime: FunctionsRuntime) -> Manifest:
     tools: dict[str, ToolSpec] = {}
     for name, fn in runtime.functions.items():
         params: tuple[str, ...] = ()
+        optional: frozenset[str] = frozenset()
         try:
-            params = tuple(fn.parameters.model_fields.keys())
+            fields = fn.parameters.model_fields
+            params = tuple(fields.keys())
+            optional = frozenset(k for k, f in fields.items() if not f.is_required())
         except Exception:
             params = ()
         if EGRESS_TOOL_RE.search(name):
-            reqs = [RecipientTraceable(a) for a in params if RECIPIENT_ARG_RE.search(a)]
-            reqs += [AtomInRequest(a) for a in params if not RECIPIENT_ARG_RE.search(a)]
+            # An event's title IS its payload (gap class 3: the injected
+            # "Booking a room at the Riverside View Hotel"). The hand-authored v2
+            # policies already demand it traces; the auto-manifest only ever blocked
+            # that attack by accident, through bugs that are now fixed.
+            target = lambda a: bool(RECIPIENT_ARG_RE.search(a)) or (a == "title" and "event" in name.lower())
+            # On a SHARE tool the id is what leaves: share_file(file_id=<a file nobody named>,
+            # email=<a person the user named>) passed on the email alone (adversary round 2,
+            # H1). There the id must be named, or created by this episode. Applying this to
+            # every egress tool cost 28 genuine calls on replay (an event named by its title,
+            # its id from a search), so it is scoped to sharing.
+            is_id = lambda a: "share" in name.lower() and (a == "id" or a.endswith("_id") or a.endswith("_ids"))
+            reqs = [RecipientTraceable(a) for a in params if target(a)]
+            reqs += [TargetTraceable(a) for a in params if is_id(a) and not target(a)]
+            reqs += [AtomInRequest(a) for a in params if not target(a) and not is_id(a)]
             effects = frozenset({"egress"})
         elif DESTRUCTIVE_TOOL_RE.search(name):
-            reqs = [AnyArgTraceable(params)] if params else []
+            # For pure destruction the id IS the target. AnyArgTraceable let any argument
+            # vouch: delete_file(file_id="666", reason="meeting") passed because "meeting"
+            # traced. Update tools keep the any-arg rule: there the dangerous argument is
+            # the new value (a recipient), and naming the id as target cost 7 benign
+            # banking calls on replay while catching nothing.
+            ids = [a for a in params if a == "id" or a.endswith("_id")]
+            pure = re.search(r"delete|remove|cancel|wipe", name, re.IGNORECASE)
+            reqs = [TargetTraceable(ids[0])] if (ids and pure) else ([AnyArgTraceable(params)] if params else [])
             effects = frozenset({"mutate"})
+        elif CREATES_RE.match(name):
+            # create_file / create_calendar_event-style tools make a new object; the effect
+            # lets observe_result mint a Created origin for the id they return, so the
+            # episode may later share or delete what it made
+            reqs = []
+            effects = frozenset({"create"})
         else:
             reqs = []
             effects = frozenset({"read"})
         reqs.append(SpoofCheck())
-        tools[name] = ToolSpec(name=name, effects=effects, requires=tuple(reqs))
+        tools[name] = ToolSpec(name=name, effects=effects, requires=tuple(reqs), optional_args=optional)
     return Manifest(tools)
 
 
@@ -80,6 +109,7 @@ class GatellmGate(BasePipelineElement):
     def _context(self, messages) -> tuple[Episode, list[str]]:
         user_req = ""
         secrets: set[str] = set()
+        results: list[tuple[str, str]] = []
         for m in messages:
             role = m.get("role")
             content = m.get("content")
@@ -90,7 +120,14 @@ class GatellmGate(BasePipelineElement):
                 user_req = text or ""
             elif role == "tool" and text:
                 secrets.update(find_secrets(text))
-        return Episode(user_req), sorted(secrets)
+                # a result with no error is the result of a call this gate allowed
+                tc = m.get("tool_call")
+                if tc is not None and not m.get("error"):
+                    results.append((tc.function, text))
+        ep = Episode(user_req)
+        for fn, text in results:
+            observe_result(self._manifest, ep, fn, text)
+        return ep, sorted(secrets)
 
     def query(
         self,

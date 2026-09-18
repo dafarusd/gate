@@ -155,6 +155,15 @@ is minutes on the frontier arm.
   longer pending — they were measured, and two of them leak. See finding 4.
 - Attacker model: one poisoned document surface per task, no system-prompt
   access. Stronger attackers (multi-surface, model-aware) are future work.
+- The v3.1 gate matched targets as substrings. Name `alice@example.com` and it also let
+  `ce@example.com` through — or file `123` when you'd said `1234`. None of the measured attacks
+  was shaped like that, so the 0-in-373 record holds for what was run. An attacker who'd read the
+  code would've gotten past it. Fixed 2026-09-18: a target has to match a whole token now.
+  Replayed against all 8,026 tool calls in the run logs here, it changes 4 verdicts — all the
+  same read of a Slack channel called `random` that the old gate allowed only because the
+  request's URL ended in `/random`. All four come from an attacker's goal replayed as a task.
+  `gatellml/src/replay_gate.py` re-derives this; the bypasses are pinned in
+  `tests/test_policy_gate.py`.
 
 ## Repo map
 

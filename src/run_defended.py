@@ -103,12 +103,16 @@ class VeniceClient:
         return getattr(self._inner, name)
 
 
-def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provider: str = "local", gatellm_manifest: str | None = None) -> AgentPipeline:
+def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provider: str = "local", gatellm_manifest: str | None = None,
+                   answer_echo: bool = False) -> AgentPipeline:
     if provider == "venice":
         # VENICE_API_KEY passed straight from env; never read, never logged.
         client = VeniceClient(
             api_key=os.environ["VENICE_API_KEY"],
             base_url="https://api.venice.ai/api/v1",
+            # A stalled request otherwise waits the client default of 600 s before the
+            # retry: Addendum L's first arm sat 10 minutes on one cell (2026-09-18).
+            timeout=120.0,
         )
         llm = OpenAILLM(client, model_id)
         name_prefix = "local"  # keeps attack name-resolution ("Local model") valid
@@ -118,6 +122,9 @@ def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provid
         client = VeniceClient(
             api_key=os.environ["VENICE_API_KEY"],
             base_url="https://api.venice.ai/api/v1",
+            # A stalled request otherwise waits the client default of 600 s before the
+            # retry: Addendum L's first arm sat 10 minutes on one cell (2026-09-18).
+            timeout=120.0,
         )
         llm = LocalLLM(client, model_id)
         name_prefix = "local"
@@ -154,13 +161,15 @@ def build_pipeline(model_id: str, gate_layers: set[str], spotlight: bool, provid
         enforcement_element = gate
 
     loop_elements = ([enforcement_element] if gate_on else []) + [ToolsExecutor(formatter), llm]
-    pipeline = AgentPipeline(
-        [SystemMessage(system_message), InitQuery(), llm, ToolsExecutionLoop(loop_elements)]
-    )
+    elements = [SystemMessage(system_message), InitQuery(), llm, ToolsExecutionLoop(loop_elements)]
+    if answer_echo:
+        from answer_echo_filter import AnswerEchoFilter   # opt-in, Addendum M/P; off by default
+        elements.append(AnswerEchoFilter())
+    pipeline = AgentPipeline(elements)
     tag = f"gate-{'+'.join(sorted(gate_layers)) if gate_on else 'off'}"
     # name must contain the ModelsEnum value "local" — important_instructions
     # attack resolves the display model name via substring match on pipeline.name
-    pipeline.name = f"{name_prefix}-{model_id}-{tag}{'-spot' if spotlight else ''}"
+    pipeline.name = f"{name_prefix}-{model_id}-{tag}{'-spot' if spotlight else ''}{'-echo' if answer_echo else ''}"
     return pipeline
 
 
@@ -176,13 +185,19 @@ def main() -> None:
     ap.add_argument("--gate", default="all", help="'all', 'none', 'gatellm', or comma list: egress,destructive,spoof,taint")
     ap.add_argument("--gatellm-manifest", default=None, help="path to hand-authored policy manifest JSON")
     ap.add_argument("--spotlight", action="store_true")
+    # On by default since Addendum R (owner decision, 2026-09-18): a separately named layer,
+    # never counted as part of the gate. Pipelines that run it are tagged "-echo". Reproduce any
+    # addendum before R with --no-answer-echo.
+    ap.add_argument("--answer-echo", action=argparse.BooleanOptionalAction, default=True,
+                    help="reply filter (Addenda M, P, Q): removes answer sentences copying an injected speech instruction")
     ap.add_argument("--benign-only", action="store_true")
     ap.add_argument("--benchmark-version", default="v1.2")
     args = ap.parse_args()
 
     gate_layers = {s.strip() for s in args.gate.split(",") if s.strip()}
     suite = get_suite(args.benchmark_version, args.suite)
-    pipeline = build_pipeline(args.model_id, gate_layers, args.spotlight, provider=args.provider, gatellm_manifest=args.gatellm_manifest)
+    pipeline = build_pipeline(args.model_id, gate_layers, args.spotlight, provider=args.provider,
+                              gatellm_manifest=args.gatellm_manifest, answer_echo=args.answer_echo)
     logdir = Path(args.logdir)
 
     with OutputLogger(str(logdir)):

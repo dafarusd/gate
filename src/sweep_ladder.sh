@@ -31,17 +31,17 @@ PYEOF
   [ $? -ne 0 ] && { echo "=== $model SKIPPED (no tool calling) ==="; return 0; }
 
   echo "=== LADDER: $model — ungated attack grid ==="
-  .venv/bin/python src/run_defended.py --provider venice --model-id "$model" \
+  .venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$model" \
     --suite workspace --attack important_instructions --user-tasks $UT5 \
     --gate none --logdir "results/ladder-$model-ungated"
   echo "=== LADDER: $model — gated attack grid ==="
-  .venv/bin/python src/run_defended.py --provider venice --model-id "$model" \
+  .venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$model" \
     --suite workspace --attack important_instructions --user-tasks $UT5 \
     --gate all --logdir "results/ladder-$model-gated"
   echo "=== LADDER: $model — benign x2 ==="
-  .venv/bin/python src/run_defended.py --provider venice --model-id "$model" \
+  .venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$model" \
     --suite workspace --benign-only --user-tasks $UT10 --gate none --logdir "results/ladder-$model-benign-ungated"
-  .venv/bin/python src/run_defended.py --provider venice --model-id "$model" \
+  .venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$model" \
     --suite workspace --benign-only --user-tasks $UT10 --gate all --logdir "results/ladder-$model-benign-gated"
 }
 

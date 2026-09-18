@@ -22,7 +22,15 @@ preserved because benign requests name their targets.
 from __future__ import annotations
 
 import re
+import sys
 from collections.abc import Sequence
+from pathlib import Path
+
+_REPO = str(Path(__file__).resolve().parent.parent.parent)
+if _REPO not in sys.path:
+    sys.path.insert(0, _REPO)
+
+from gatellml.lang.origins import norm_request, traces  # one tracing rule for both gates
 
 from agentdojo.agent_pipeline.base_pipeline_element import BasePipelineElement
 from agentdojo.functions_runtime import EmptyEnv, Env, FunctionsRuntime
@@ -84,10 +92,6 @@ BLOCK_MSG = (
 )
 
 
-def _norm(s: str) -> str:
-    return re.sub(r"\s+", " ", s).strip().lower()
-
-
 def _user_request_text(messages: Sequence[ChatMessage]) -> str:
     """The original user request = first user-role message. Untrusted content
     lives in tool results, never in user messages, in this threat model."""
@@ -138,7 +142,7 @@ class PolicyGate(BasePipelineElement):
             else:
                 arg_values[str(k)] = [str(v)]
         all_args_text = " ".join(x for vs in arg_values.values() for x in vs)
-        req = _norm(user_req)
+        req = norm_request(user_req)
 
         if self.spoof_check and CONFIRMATION_SPOOF_RE.search(all_args_text):
             return "confirmation_spoof"
@@ -162,7 +166,7 @@ class PolicyGate(BasePipelineElement):
                     targets.update(URL_RE.findall(v))
                     targets.update(IBAN_RE.findall(v))
             for t in targets:
-                if _norm(t) not in req:
+                if not traces(t, req):
                     return f"egress_recipient (target not in user request: {t[:40]})"
 
             if self.taint_check:
@@ -172,7 +176,7 @@ class PolicyGate(BasePipelineElement):
 
         if self.destructive_check and DESTRUCTIVE_TOOL_RE.search(fn):
             named = any(
-                len(v) >= 3 and _norm(v) in req
+                len(v) >= 3 and traces(v, req)
                 for vs in arg_values.values() for v in vs
             )
             if not named:

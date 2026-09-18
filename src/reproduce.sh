@@ -7,12 +7,12 @@ MODEL="qwen3-coder-480b-a35b-instruct-turbo"
 UT="user_task_2 user_task_4"   # compliance-proven tasks — attacks reach the tools
 
 echo "== 1/2 undefended =="
-.venv/bin/python src/run_defended.py --provider venice --model-id "$MODEL" \
+.venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$MODEL" \
   --suite workspace --attack important_instructions --user-tasks $UT \
   --gate none --logdir results/repro-ungated
 
 echo "== 2/2 gated =="
-.venv/bin/python src/run_defended.py --provider venice --model-id "$MODEL" \
+.venv/bin/python src/run_defended.py --no-answer-echo --provider venice --model-id "$MODEL" \
   --suite workspace --attack important_instructions --user-tasks $UT \
   --gate all --logdir results/repro-gated
 
